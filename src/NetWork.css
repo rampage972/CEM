@@ -1,0 +1,96 @@
+.chart-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+.TotalNumber {
+    font-weight: bold;
+    font-size: 2em;
+}
+.toggleSubMenu {
+    transform: translate(1em,0);
+}
+.cardTitle-lable {
+    padding-top: 1em;
+    position: unset;
+    text-align: center;
+
+}
+.nav-item {
+    border-bottom: 1px solid white;
+}
+
+.upperBar{
+    margin: 3em 0;
+}
+.textAlign-Left {
+    text-align: left;
+}
+.setToCenter {
+    margin: 0 auto;
+}
+.cardTitle-Icon {
+    width: 20% !important;
+    height: 80% !important;
+    transform: scale(1.5);
+}
+.btn-search {
+    position: relative;
+}
+.searchIcon {
+    position: absolute;
+    transform: translate(10px,10px);
+    top: 0;
+    left: 0;
+}
+.card-info{
+    display: none;
+}
+
+.legend-container {
+    padding-top: 10px;
+}
+
+.card-info-mobile-item {
+    width: 100%;
+    padding-top: 10px;
+    border-bottom: 1px solid gray;
+}
+
+.legendLabel {
+    padding-left: 10px;
+}
+
+@media screen and (min-width: 1500px) {
+    .cardTitle-Icon {
+        width: 100% !important;
+        height: 100% !important;
+        transform: scale(1);
+    }
+    .cardTitle-lable {
+        padding-top: 0;
+        text-align: left;
+    
+    }
+    .cardTitle-lable-container {
+        display: flex;
+    align-items: center;
+    }
+    .setToCenter {
+        margin: 0 auto;
+        width: max-content;
+    }
+
+    .card-info{
+        display: block;
+    }
+
+    .card-info-mobile{
+        display: none;
+    }
+
+    .legend-container {
+        padding-top: 0px;
+    }
+  }
