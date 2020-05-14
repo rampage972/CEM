@@ -3,11 +3,15 @@ import React, { Component } from 'react'
 import { Doughnut, Bar } from 'react-chartjs-2'
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import DataUsageIcon from '@material-ui/icons/DataUsage';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTachometerAlt } from '@fortawesome/free-solid-svg-icons'
+
 export default class Usage extends Component {
     constructor() {
         super()
         this.state = {
             legendDoughnutVolume: [],
+            legendBarThroughput: [],
             legendBarLatency: [],
             fakedata: []
         }
@@ -17,11 +21,11 @@ export default class Usage extends Component {
         if (this.doughnutVolume) {
             this.setState({ legendDoughnutVolume: this.doughnutVolume.chartInstance.legend.legendItems });
         }
-        this.barLatency && this.setState({ legendBarLatency: this.barLatency.chartInstance.legend.legendItems });
+        this.barThroughput && this.setState({ legendBarThroughput: this.barThroughput.chartInstance.legend.legendItems });
 
     }
     render() {
-        const { legendDoughnutVolume, legendBarLatency, optionsBarChart } = this.state
+        const { legendDoughnutVolume, legendBarThroughput, optionsBarChart } = this.state
 
         return (
             <div>
@@ -29,13 +33,13 @@ export default class Usage extends Component {
                 <div className="card card-chart card-info">
                     <div className="card-header ">
                         <div className="row">
-                            <div className="col-lg-2">
+                            <div className="col-lg-2 paddingLeftCardIcon">
                                 <PersonOutlineIcon className="cardTitle-Icon" />
                             </div>
                             <div className="col-lg-10 cardTitle-lable-container">
                                 <div className="cardTitle-lable ">
                                     <h4 className="card-title">Active Subcribers per Minute</h4>
-                                    <p>Number of subcribers having active sessions</p>
+                                    <p className="noMargin">Number of subcribers having active sessions</p>
                                 </div>
                             </div>
                         </div>
@@ -46,30 +50,19 @@ export default class Usage extends Component {
                                 <div className="legend-container">
                                     <div className="ct-chart" id="dailySalesChart">
                                         <div className="row">
-                                            <div className="col-lg-6 textAlign-Left">
+                                            <div className="col-lg-6 text-left">
                                                 <div className="setToCenter">
                                                     <p style={{ margin: "0" }}>Now</p>
+                                                    <span className="TotalNumber">{this.props.totalNumberVolume.toFixed(1)} %</span>
+
                                                 </div>
                                             </div>
-                                            <div className="col-lg-6 textAlign-Left">
+                                            <div className="col-lg-6 text-left">
                                                 <div className="setToCenter">
                                                     <div className="volumePerSub-container">
                                                         <p style={{ margin: "0" }}>Today's Peak Minute</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="col-lg-6 textAlign-Left">
-                                                <div className="setToCenter">
-
-                                                    <span className="TotalNumber">{this.props.totalNumberVolume.toFixed(1)} %</span>
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-6 textAlign-Left">
-                                                <div className="setToCenter">
-                                                    <div className="volumePerSub-container">
                                                         <span className="TotalNumber ">{this.props.totalNumberVolume.toFixed(1)} %</span>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -162,13 +155,13 @@ export default class Usage extends Component {
                 <div className="card card-chart card-info">
                     <div className="card-header ">
                         <div className="row">
-                            <div className="col-lg-2">
-                                <DataUsageIcon className="cardTitle-Icon" />
+                            <div className="col-lg-2 paddingLeftCardIcon">
+                                <FontAwesomeIcon icon={faTachometerAlt} className="cardTitle-Icon" />
                             </div>
                             <div className="col-lg-10 cardTitle-lable-container">
                                 <div className="cardTitle-lable">
                                     <h4 className="card-title">Throughput</h4>
-                                    <p>Throughput between subscribers and external servers</p>
+                                    <p className="noMargin">Throughput between subscribers and external servers</p>
                                 </div>
                             </div>
                         </div>
@@ -179,51 +172,61 @@ export default class Usage extends Component {
                                 <div className="legend-container">
                                     <div className="ct-chart" id="dailySalesChart">
                                         <div className="row">
-                                            <div className="col-lg-4 textAlign-Left">
+                                            <div className="col-lg-4 text-left">
                                                 <div className="setToCenter">
-                                                    <p style={{ margin: "0" }}>Now Extenal</p>
+                                                    <p style={{ margin: "0" }}>Now </p>
+                                                    <span className="TotalNumber">{this.props.totalNumberVolume.toFixed(1)} %</span>
                                                 </div>
                                             </div>
-                                            <div className="col-lg-4 textAlign-Left">
-                                                <div className="setToCenter">
-                                                    <p style={{ margin: "0" }}>Current Hour Extenal</p>
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-4 textAlign-Left">
-                                                <div className="setToCenter">
-                                                    <div className="volumePerSub-container">
-                                                        <p style={{ margin: "0" }}>Today Extenal</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="col-lg-4 textAlign-Left">
+                                            <div className="col-lg-4 text-left">
                                                 <div className="setToCenter">
 
-                                                    <span className="TotalNumber">{this.props.totalNumberVolume.toFixed(1)} %</span>
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-4 textAlign-Left">
-                                                <div className="setToCenter">
-                                                    <span className="TotalNumber">{this.props.totalNumberVolume.toFixed(1)} %</span>
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-4 textAlign-Left">
-                                                <div className="setToCenter">
                                                     <div className="volumePerSub-container">
+                                                        <p style={{ margin: "0" }}>Today </p>
                                                         <span className="TotalNumber ">{this.props.totalNumberVolume.toFixed(1)} %</span>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-4 text-left">
+                                                <div className="setToCenter">
+
+                                                <div className="legend-container">
+                                                        <ul className="mt-8" type="none" style={{ padding: "0" }}>
+                                                            {legendBarThroughput && legendBarThroughput.length &&
+                                                                legendBarThroughput.map((item, key) => {
+                                                                    return (
+                                                                        <li key={key} >
+                                                                            <div
+                                                                                style={{
+                                                                                    display: "inline-block",
+                                                                                    float: "left",
+                                                                                    width: "20px",
+                                                                                    height: "20px",
+                                                                                    backgroundColor: item.fillStyle
+                                                                                }}
+                                                                            >
+
+                                                                            </div>
+                                                                            <span className="legendLabel">{item.text}</span>
+                                                                           
+                                                                        </li>
+                                                                    );
+                                                                })}
+                                                        </ul>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
+
                             </div>
                             <div className="col-lg-12">
                                 <div className="upperBar">
                                     <Bar
-                                        ref={ref => (this.barLatency = ref)}
+                                        ref={ref => (this.barThroughput = ref)}
                                         data={this.props.dataUsage.dataUsageThroughput}
                                         options={this.props.optionsBarToNegativeNumb}
                                     />
@@ -231,54 +234,6 @@ export default class Usage extends Component {
 
                             </div>
 
-                            <div className="col-lg-12">
-                                <div className="legend-container">
-                                    <div className="ct-chart" id="dailySalesChart">
-                                        <div className="row">
-                                            <div className="col-lg-4 textAlign-Left">
-                                                <div className="setToCenter">
-                                                    <p style={{ margin: "0" }}>Now Intenal</p>
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-4 textAlign-Left">
-                                                <div className="setToCenter">
-                                                    <p style={{ margin: "0" }}>Current Hour Intenal</p>
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-4 textAlign-Left">
-                                                <div className="setToCenter">
-
-                                                    <div className="volumePerSub-container">
-                                                        <p style={{ margin: "0" }}>Today Intenal</p>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="col-lg-4 textAlign-Left">
-                                                <div className="setToCenter">
-                                                    <span className="TotalNumber">{this.props.totalNumberVolume.toFixed(1)} %</span>
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-4 textAlign-Left">
-                                                <div className="setToCenter">
-                                                    <span className="TotalNumber">{this.props.totalNumberVolume.toFixed(1)} %</span>
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-4 textAlign-Left">
-                                                <div className="setToCenter">
-                                                    <div className="volumePerSub-container">
-                                                        <span className="TotalNumber ">{this.props.totalNumberVolume.toFixed(1)} %</span>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
                         </div>
                         {/* <div className="card-footer">
                                                         <div className="stats">
@@ -348,25 +303,24 @@ export default class Usage extends Component {
 
                             </div>
 
-                            <div className="col-lg-12">
+                            <div className="col-md-12">
                                 <div className="legend-container">
                                     <div className="ct-chart" id="dailySalesChart">
                                         <div className="row">
-                                            <div className="col-lg-12 card-info-mobile-item">
+                                            <div className="col-md-12 card-info-mobile-item">
                                                 <div className="setToCenter">
+
                                                     <p style={{ margin: "0" }}>Now Intenal</p>
                                                     <span className="TotalNumber">{this.props.totalNumberVolume.toFixed(1)} %</span>
-
                                                 </div>
                                             </div>
-                                            <div className="col-lg-12 card-info-mobile-item">
+                                            <div className="col-md-12 card-info-mobile-item">
                                                 <div className="setToCenter">
                                                     <p style={{ margin: "0" }}>Current Hour Intenal</p>
                                                     <span className="TotalNumber">{this.props.totalNumberVolume.toFixed(1)} %</span>
-
                                                 </div>
                                             </div>
-                                            <div className="col-lg-12 card-info-mobile-item">
+                                            <div className="col-md-12 card-info-mobile-item">
                                                 <div className="setToCenter">
 
                                                     <div className="volumePerSub-container">
@@ -377,6 +331,7 @@ export default class Usage extends Component {
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
 
@@ -394,14 +349,14 @@ export default class Usage extends Component {
                 <div className="card card-chart card-info">
                     <div className="card-header ">
                         <div className="row">
-                            <div className="col-lg-2">
+                            <div className="col-lg-2 paddingLeftCardIcon">
 
                                 <DataUsageIcon className="cardTitle-Icon" />
                             </div>
                             <div className="col-lg-10 cardTitle-lable-container">
                                 <div className="cardTitle-lable">
                                     <h4 className="card-title">VOLUME</h4>
-                                    <p>Total payload traffic generated by all subcribers</p>
+                                    <p className="noMargin">Total payload traffic generated by all subcribers</p>
                                 </div>
 
                             </div>
@@ -410,7 +365,7 @@ export default class Usage extends Component {
                     </div>
                     <div className="card-body">
                         <div className="row">
-                            <div className="col-xl-3">
+                            <div className="col-xl-4">
                                 <div className="chart-container">
                                     <Doughnut
                                         ref={ref => (this.doughnutVolume = ref)}
@@ -421,82 +376,57 @@ export default class Usage extends Component {
                             </div>
 
 
-                            <div className="col-xl-9">
+                            <div className="col-xl-8 ">
                                 <div className="row">
-                                    <div className="col-lg-5 textAlign-Left">
+                                    <div className="col-lg-5 text-left noPadding">
                                         <div className="setToCenter">
                                             <div className="legend-container">
                                                 <div className="ct-chart" id="dailySalesChart">
                                                     <p style={{ margin: "0" }}>Today</p>
+                                                    <span className="TotalNumber">{this.props.totalNumberVolume.toFixed(1)} TB</span>
+                                                    <div className="legend-container">
+                                                        <ul className="mt-8" type="none" style={{ padding: "0" }}>
+                                                            {legendDoughnutVolume && legendDoughnutVolume.length &&
+                                                                legendDoughnutVolume.map((item, key) => {
+                                                                    return (
+                                                                        <li key={key} >
+                                                                            <div
+                                                                                style={{
+                                                                                    display: "inline-block",
+                                                                                    float: "left",
+                                                                                    width: "20px",
+                                                                                    height: "20px",
+                                                                                    backgroundColor: item.fillStyle
+                                                                                }}
+                                                                            >
 
+                                                                            </div>
+                                                                            <span className="legendLabel">{item.text}</span>
+                                                                            {item.text === "Uplink" ?
+                                                                                <span style={{ fontWeight: "bold" }}> {this.props.dataUsage.dataUsageVolume.datasets[0].data[0]} TB</span>
+                                                                                : <span style={{ fontWeight: "bold" }}> {this.props.dataUsage.dataUsageVolume.datasets[0].data[1]} TB</span>
+
+                                                                            }
+                                                                        </li>
+                                                                    );
+                                                                })}
+                                                        </ul>
+                                                    </div>
 
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-lg-7 textAlign-Left">
+                                    <div className="col-lg-7 text-left noPadding">
                                         <div className="setToCenter">
 
                                             <div className="volumePerSub-container">
                                                 <p style={{ margin: "0" }}>Average Volume per Subscriber</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-xl-5 col-lg-12 textAlign-Left">
-                                        <div className="setToCenter">
-                                            <div className="legend-container">
-                                                <span className="TotalNumber">{this.props.totalNumberVolume.toFixed(1)} TB</span>
-
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-lg-12 col-xl-7 textAlign-Left">
-                                        <div className="setToCenter">
-
-                                            <div className="volumePerSub-container">
                                                 <span className="TotalNumber ">{this.props.totalNumberVolume.toFixed(1)} MB</span>
 
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-xl-5 col-lg-12 textAlign-Left">
-                                        <div className="setToCenter">
-                                            <div className="legend-container">
-                                                <ul className="mt-8" type="none" style={{ padding: "0" }}>
-                                                    {legendDoughnutVolume && legendDoughnutVolume.length &&
-                                                        legendDoughnutVolume.map((item, key) => {
-                                                            return (
-                                                                <li key={key} >
-                                                                    <div
-                                                                        style={{
-                                                                            display: "inline-block",
-                                                                            float: "left",
-                                                                            width: "20px",
-                                                                            height: "20px",
-                                                                            backgroundColor: item.fillStyle
-                                                                        }}
-                                                                    >
-
-                                                                    </div>
-                                                                    <span className="legendLabel">{item.text}</span>
-                                                                    {item.text === "Uplink" ?
-                                                                        <span style={{ fontWeight: "bold" }}> {this.props.dataUsage.dataUsageVolume.datasets[0].data[0]} TB</span>
-                                                                        : <span style={{ fontWeight: "bold" }}> {this.props.dataUsage.dataUsageVolume.datasets[0].data[1]} TB</span>
-
-                                                                    }
-                                                                </li>
-                                                            );
-                                                        })}
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                 </div>
 
                             </div>

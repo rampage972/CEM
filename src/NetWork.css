@@ -17,15 +17,12 @@
     text-align: center;
 
 }
-.nav-item {
-    border-bottom: 1px solid white;
+.noMargin {
+    margin: 0;
 }
 
 .upperBar{
     margin: 3em 0;
-}
-.textAlign-Left {
-    text-align: left;
 }
 .setToCenter {
     margin: 0 auto;
@@ -46,6 +43,7 @@
 }
 .card-info{
     display: none;
+    font-size:unset;
 }
 
 .legend-container {
@@ -57,12 +55,26 @@
     padding-top: 10px;
     border-bottom: 1px solid gray;
 }
+.noPadding {
+    padding: 0;
+}
 
+.paddingLRCard {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.paddingLeftCardIcon {
+    padding: 0;
+    padding-left: 2em;
+}
 .legendLabel {
     padding-left: 10px;
 }
-
-@media screen and (min-width: 1500px) {
+.sidebar-background{
+    background-image: url('/asset/image/sidebar.jpg');
+}
+@media screen and (min-width: 1024px) {
     .cardTitle-Icon {
         width: 100% !important;
         height: 100% !important;
@@ -83,7 +95,9 @@
     }
 
     .card-info{
+        font-size: 0.6vw;
         display: block;
+        font-weight: 700;
     }
 
     .card-info-mobile{

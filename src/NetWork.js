@@ -5,11 +5,17 @@ import SearchIcon from '@material-ui/icons/Search';
 import { Doughnut, Bar } from 'react-chartjs-2'
 import './NetWork.css'
 import DataUsageIcon from '@material-ui/icons/DataUsage';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {Link} from "react-router-dom";
+import { faUser, faProjectDiagram, faEllipsisV, faBars, faMapMarkerAlt, faPlaneDeparture } from '@fortawesome/free-solid-svg-icons'
+// import SideBarBackGround from '../public/asset/image/sidebar.jpg'
 export default class NetWork extends Component {
     constructor() {
         super()
         this.state = {
-            currentWidth:0,
+            isUserMenuOpen: false,
+            isMenuMiniOpened: false,
+            currentWidth: 0,
             isSubMenuOpened: false,
             legendDoughnutVolume: [],
             legendBarLatency: [],
@@ -34,88 +40,18 @@ export default class NetWork extends Component {
                     }]
                 },
                 dataUsageThroughput: {
-                    labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
+                    labels: [],
                     fontSize: 10,
                     position: "left",
                     datasets: [{
-                        label: 'one',
-                        data: [{
-                            x: '1',
-                            y: 20
-                        },
-                        {
-                            x: '2',
-                            y: 10
-                        },
-                        {
-                            x: '3',
-                            y: 20
-                        },
-                        {
-                            x: '4',
-                            y: 30
-                        },
-                        {
-                            x: '5',
-                            y: 20
-                        },
-                        {
-                            x: '6',
-                            y: 20
-                        },
-                        {
-                            x: '7',
-                            y: 20
-                        },
-                        {
-                            x: '8',
-                            y: 30
-                        },
-                        {
-                            x: '9',
-                            y: 30
-                        },
+                        label: 'Uplink',
+                        data: [
                         ],
                         backgroundColor: '#5073b7'
                     },
                     {
-                        label: 'two',
-                        data: [{
-                            x: '1',
-                            y: 30
-                        },
-                        {
-                            x: '2',
-                            y: 20
-                        },
-                        {
-                            x: '3',
-                            y: 20
-                        },
-                        {
-                            x: '4',
-                            y: 10
-                        },
-                        {
-                            x: '5',
-                            y: 10
-                        },
-                        {
-                            x: '6',
-                            y: 20
-                        },
-                        {
-                            x: '7',
-                            y: 30
-                        },
-                        {
-                            x: '8',
-                            y: 30
-                        },
-                        {
-                            x: '9',
-                            y: 30
-                        },
+                        label: 'Downlink',
+                        data: [
                         ],
                         backgroundColor: '#bbcaef'
                     }
@@ -127,130 +63,25 @@ export default class NetWork extends Component {
                     position: "left",
                     datasets: [{
                         label: 'one',
-                        data: [{
-                            x: '1',
-                            y: 20
-                        },
-                        {
-                            x: '2',
-                            y: 10
-                        },
-                        {
-                            x: '3',
-                            y: 20
-                        },
-                        {
-                            x: '4',
-                            y: 30
-                        },
-                        {
-                            x: '5',
-                            y: 20
-                        },
-                        {
-                            x: '6',
-                            y: 20
-                        },
-                        {
-                            x: '7',
-                            y: 20
-                        },
-                        {
-                            x: '8',
-                            y: 30
-                        },
-                        {
-                            x: '9',
-                            y: 30
-                        },
+                        data: [
                         ],
                         backgroundColor: '#5073b7'
                     }
                     ]
                 },
                 dataUsageThroughput: {
-                    labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
+                    labels: [],
                     fontSize: 10,
                     position: "left",
                     datasets: [{
                         label: 'one',
-                        data: [{
-                            x: '1',
-                            y: 20
-                        },
-                        {
-                            x: '2',
-                            y: 10
-                        },
-                        {
-                            x: '3',
-                            y: 20
-                        },
-                        {
-                            x: '4',
-                            y: 30
-                        },
-                        {
-                            x: '5',
-                            y: 20
-                        },
-                        {
-                            x: '6',
-                            y: 20
-                        },
-                        {
-                            x: '7',
-                            y: 20
-                        },
-                        {
-                            x: '8',
-                            y: 30
-                        },
-                        {
-                            x: '9',
-                            y: 30
-                        },
+                        data: [
                         ],
                         backgroundColor: '#5073b7'
                     },
                     {
                         label: 'two',
-                        data: [{
-                            x: '1',
-                            y: 30
-                        },
-                        {
-                            x: '2',
-                            y: 20
-                        },
-                        {
-                            x: '3',
-                            y: 20
-                        },
-                        {
-                            x: '4',
-                            y: 10
-                        },
-                        {
-                            x: '5',
-                            y: 10
-                        },
-                        {
-                            x: '6',
-                            y: 20
-                        },
-                        {
-                            x: '7',
-                            y: 30
-                        },
-                        {
-                            x: '8',
-                            y: 30
-                        },
-                        {
-                            x: '9',
-                            y: 30
-                        },
+                        data: [
                         ],
                         backgroundColor: '#bbcaef'
                     }
@@ -259,176 +90,36 @@ export default class NetWork extends Component {
             },
             dataConnect: {
                 dataConnectPacketLoss: {
-                    labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
+                    labels: [],
                     fontSize: 10,
                     position: "left",
                     datasets: [{
                         label: 'one',
-                        data: [{
-                            x: '1',
-                            y: 20
-                        },
-                        {
-                            x: '2',
-                            y: 10
-                        },
-                        {
-                            x: '3',
-                            y: 20
-                        },
-                        {
-                            x: '4',
-                            y: 30
-                        },
-                        {
-                            x: '5',
-                            y: 20
-                        },
-                        {
-                            x: '6',
-                            y: 20
-                        },
-                        {
-                            x: '7',
-                            y: 20
-                        },
-                        {
-                            x: '8',
-                            y: 30
-                        },
-                        {
-                            x: '9',
-                            y: 30
-                        },
+                        data: [
                         ],
                         backgroundColor: '#5073b7'
                     },
                     {
                         label: 'two',
-                        data: [{
-                            x: '1',
-                            y: 30
-                        },
-                        {
-                            x: '2',
-                            y: 20
-                        },
-                        {
-                            x: '3',
-                            y: 20
-                        },
-                        {
-                            x: '4',
-                            y: 10
-                        },
-                        {
-                            x: '5',
-                            y: 10
-                        },
-                        {
-                            x: '6',
-                            y: 20
-                        },
-                        {
-                            x: '7',
-                            y: 30
-                        },
-                        {
-                            x: '8',
-                            y: 30
-                        },
-                        {
-                            x: '9',
-                            y: 30
-                        },
+                        data: [
                         ],
                         backgroundColor: '#bbcaef'
                     }
                     ]
                 },
                 dataConnectLatency: {
-                    labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
+                    labels: [],
                     fontSize: 10,
                     position: "left",
                     datasets: [{
                         label: 'one',
-                        data: [{
-                            x: '1',
-                            y: 20
-                        },
-                        {
-                            x: '2',
-                            y: 10
-                        },
-                        {
-                            x: '3',
-                            y: 20
-                        },
-                        {
-                            x: '4',
-                            y: 30
-                        },
-                        {
-                            x: '5',
-                            y: 20
-                        },
-                        {
-                            x: '6',
-                            y: 20
-                        },
-                        {
-                            x: '7',
-                            y: 20
-                        },
-                        {
-                            x: '8',
-                            y: 30
-                        },
-                        {
-                            x: '9',
-                            y: 30
-                        },
+                        data: [
                         ],
                         backgroundColor: '#5073b7'
                     },
                     {
                         label: 'two',
-                        data: [{
-                            x: '1',
-                            y: 30
-                        },
-                        {
-                            x: '2',
-                            y: 20
-                        },
-                        {
-                            x: '3',
-                            y: 20
-                        },
-                        {
-                            x: '4',
-                            y: 10
-                        },
-                        {
-                            x: '5',
-                            y: 10
-                        },
-                        {
-                            x: '6',
-                            y: 20
-                        },
-                        {
-                            x: '7',
-                            y: 30
-                        },
-                        {
-                            x: '8',
-                            y: 30
-                        },
-                        {
-                            x: '9',
-                            y: 30
-                        },
+                        data: [
                         ],
                         backgroundColor: '#bbcaef'
                     }
@@ -436,7 +127,11 @@ export default class NetWork extends Component {
                 },
             },
             optionsDoughVolume: {
-
+                tooltips: {
+                    titleFontSize: 6,
+                    bodyFontSize: 8
+                },
+                responsive: true,
                 cutoutPercentage: 80,
                 legend: {
                     display: false
@@ -542,7 +237,7 @@ export default class NetWork extends Component {
     }
     updateWindowDimensions() {
         this.setState({ currentWidth: window.innerWidth });
-      }
+    }
     handleClick = () => {
         let tmp = this.state.count
         tmp = tmp + 1
@@ -554,52 +249,103 @@ export default class NetWork extends Component {
         e.preventDefault();
     }
     handleChangeTextSearch = (e) => {
-        
+
     }
     handleChangeSubMenu = (e) => {
         e.preventDefault();
     }
     toggleSubmenu = () => {
-        this.setState({ isSubMenuOpened: !this.state.isSubMenuOpened })
+        this.setState({ isSubMenuOpened: !this.state.isSubMenuOpened, isUserMenuOpen: false })
+    }
+    toggleMenuMini = () => {
+        this.setState({
+            isMenuMiniOpened: !this.state.isMenuMiniOpened
+        })
+    }
+    openUserSubMenu = () => {
+        this.setState({
+            isUserMenuOpen: !this.state.isUserMenuOpen
+        })
     }
     render() {
-        const { legendDoughnutVolume, legendBarLatency, optionsBarChart, isSubMenuOpened,currentWidth } = this.state
+        const { isUserMenuOpen, isMenuMiniOpened, legendDoughnutVolume, legendBarLatency, optionsBarChart, isSubMenuOpened, currentWidth } = this.state
         return (
-            <div>
+            <div className={isMenuMiniOpened ? "sidebar-mini" : ""}>
                 <div className="wrapper ">
-                    
-                    <div style={{zIndex:10000}} className={currentWidth > 768 ? "sidebar" : isSubMenuOpened ? "sidebar toggleSubMenu" : "sidebar"} data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
-                        <div className="logo" style={{ backgroundColor: "#a0bef9",cursor:"pointer" }}>
-                            <span  className="simple-text logo-normal" style={{ color: "white" }}>
+
+                    <div style={{ zIndex: 10000 }} className={currentWidth > 991 ? "sidebar" : isSubMenuOpened ? "sidebar toggleSubMenu" : "sidebar"} data-color="azure" data-background-color="black" data-image="../assets/img/sidebar-1.jpg">
+                        <div className="logo" style={{ cursor: "pointer" }}>
+
+                            <a className="simple-text logo-mini" style={{ color: "white", fontSize: "2em", overflow: "unset" }}>
+                                <FontAwesomeIcon icon={faProjectDiagram} />
+                            </a>
+
+                            <a className="simple-text logo-normal" style={{ color: "white" }}>
                                 Net Work
-                           </span>
+                            </a>
                         </div>
-                        <div className="sidebar-wrapper" style={{ backgroundColor: "#282a30" }}>
+                        <div className="sidebar-wrapper" >
                             <ul className="nav">
-                                <li className="nav-item" style={{cursor:"pointer"}}>
-                                    <p onClick={(e)=>this.handleChangeSubMenu(e)} className="nav-link" style={{ color: "white" }}>Location</p>
+                                <li className="nav-item" style={{ cursor: "pointer" }}>
+                                    <a className="nav-link" onClick={(e) => this.handleChangeSubMenu(e)}>
+                                        <i className="material-icons"><FontAwesomeIcon icon={faMapMarkerAlt} /></i>
+                                        <p> Location </p>
+                                    </a>
+                                    {/* <p onClick={(e)=>this.handleChangeSubMenu(e)} className="nav-link" style={{ color: "white" }}>Location</p> */}
 
                                 </li>
-                                <li className="nav-item" style={{cursor:"pointer"}}>
-                                    <p  onClick={(e)=>this.handleChangeSubMenu(e)} className="nav-link" style={{ color: "white" }}>Roaming</p>
+
+                                <li className="nav-item" style={{ cursor: "pointer" }}>
+
+                                    <a className="nav-link" onClick={(e) => this.handleChangeSubMenu(e)}>
+                                        <i className="material-icons"><FontAwesomeIcon icon={faPlaneDeparture} /></i>
+                                        <p> Roaming </p>
+                                    </a>
 
                                 </li>
+
+                                {currentWidth <= 991 ?
+                                    <li className="nav-item dropdown " onClick={() => this.openUserSubMenu()}>
+                                        <a className="nav-link" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i className="material-icons"><FontAwesomeIcon icon={faUser} /></i>
+                                            <p >
+                                                Account
+                  </p>
+                                        </a>
+                                        <div className={isUserMenuOpen ? "dropdown-menu dropdown-menu-right show" : "dropdown-menu dropdown-menu-right hidding"} aria-labelledby="navbarDropdownProfile" style={{backgroundColor:"transparent"}}>
+                                            <a className="dropdown-item" href="#">Profile</a>
+                                            <a className="dropdown-item" href="#">Settings</a>
+                                            <div className="dropdown-divider"></div>
+                                            <Link to="/login">
+                                            <a className="dropdown-item" href="#">Log out</a>
+                                            </Link>
+                                        </div>
+                                    </li>
+                                    : null
+                                }
                             </ul>
                         </div>
+                        <div className="sidebar-background" ></div>
                     </div>
                     <div className="main-panel">
-                        <nav className="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top " style={{ margin: "2em" }}>
+                        <nav className="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
                             <div className="container-fluid">
                                 {/* <div className="navbar-wrapper">
                                     <p>Dashboard</p>
                                 </div> */}
+                                <div className="navbar-minimize" style={{ marginRight: "1em" }}>
+                                    <button onClick={() => this.toggleMenuMini()} id="minimizeSidebar" className="btn btn-just-icon btn-white btn-fab btn-round">
+                                        <FontAwesomeIcon icon={faEllipsisV} className="text_align-center visible-on-sidebar-regular" />
+                                        <FontAwesomeIcon icon={faBars} className=" design_bullet-list-67 visible-on-sidebar-mini" />
+                                    </button>
+                                </div>
                                 <button className="navbar-toggler" onClick={() => this.toggleSubmenu()} type="button" >
                                     <span className="sr-only">Toggle navigation</span>
                                     <span className="navbar-toggler-icon icon-bar"></span>
                                     <span className="navbar-toggler-icon icon-bar"></span>
                                     <span className="navbar-toggler-icon icon-bar"></span>
                                 </button>
-                                <div className="collapse navbar-collapse justify-content-start">
+                                <div className="collapse navbar-collapse justify-content-end">
                                     <form className="navbar-form" >
                                         <div className="input-group no-border">
                                             <input onChange={(e) => this.handleChangeTextSearch(e)} type="text" className="form-control" placeholder="Search..." />
@@ -609,9 +355,10 @@ export default class NetWork extends Component {
                                             </button>
                                         </div>
                                     </form>
-                                    {/* <ul className="navbar-nav">
-                                        <li className="nav-item">
-                                            <a className="nav-link" href="javascript:;">
+
+                                    <ul className="navbar-nav">
+                                        {/* <li className="nav-item">
+                                            <a className="nav-link" href="#pablo">
                                                 <i className="material-icons">dashboard</i>
                                                 <p className="d-lg-none d-md-block">
                                                     Stats
@@ -619,7 +366,7 @@ export default class NetWork extends Component {
                                             </a>
                                         </li>
                                         <li className="nav-item dropdown">
-                                            <a className="nav-link" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <a className="nav-link" href="http://example.com/" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <i className="material-icons">notifications</i>
                                                 <span className="notification">5</span>
                                                 <p className="d-lg-none d-md-block">
@@ -633,23 +380,28 @@ export default class NetWork extends Component {
                                                 <a className="dropdown-item" href="#">Another Notification</a>
                                                 <a className="dropdown-item" href="#">Another One</a>
                                             </div>
-                                        </li>
-                                        <li className="nav-item dropdown">
-                                            <a className="nav-link" href="javascript:;" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i className="material-icons">person</i>
+                                        </li> */}
+                                        <li className="nav-item dropdown " onClick={() => this.openUserSubMenu()}>
+                                            <a className="nav-link" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <FontAwesomeIcon icon={faUser} />
                                                 <p className="d-lg-none d-md-block">
                                                     Account
                   </p>
                                             </a>
-                                            <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
+                                            <div className={isUserMenuOpen ? "dropdown-menu dropdown-menu-right show" : "dropdown-menu dropdown-menu-right hidding"} aria-labelledby="navbarDropdownProfile">
                                                 <a className="dropdown-item" href="#">Profile</a>
                                                 <a className="dropdown-item" href="#">Settings</a>
                                                 <div className="dropdown-divider"></div>
+                                                <Link to="/login">
+
                                                 <a className="dropdown-item" href="#">Log out</a>
+                                                </Link>
                                             </div>
                                         </li>
-                                    </ul> */}
+                                    </ul>
+
                                 </div>
+
                             </div>
                         </nav>
 
@@ -660,7 +412,7 @@ export default class NetWork extends Component {
                                 <div className="content">
                                     <div className="container-fluid">
                                         <div className="row">
-                                            <div className="col-lg-4">
+                                            <div className="col-lg-4 paddingLRCard">
                                                 <Usage
                                                     dataUsage={this.state.dataUsage}
                                                     optionsBarChart={this.state.optionsBarChart}
@@ -670,7 +422,7 @@ export default class NetWork extends Component {
                                                 />
 
                                             </div>
-                                            <div className="col-lg-4">
+                                            <div className="col-lg-4 paddingLRCard">
 
                                                 <Connectivity
                                                     dataConnect={this.state.dataConnect}
@@ -687,9 +439,9 @@ export default class NetWork extends Component {
 
                             </div>
                         </div>
-                        {currentWidth<=768&&isSubMenuOpened===true?
-                        <div onClick={()=>this.toggleSubmenu()} className="close-layer visible"></div>
-                        : null
+                        {currentWidth <= 991 && isSubMenuOpened === true ?
+                            <div onClick={() => this.toggleSubmenu()} className="close-layer visible"></div>
+                            : null
                         }
                     </div>
                 </div>
