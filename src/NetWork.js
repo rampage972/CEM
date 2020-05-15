@@ -241,9 +241,9 @@ export default class NetWork extends Component {
                     }],
                     yAxes: [{
                         stacked: true,
-                        ticks: {
-                            display: false
-                        }
+                        // ticks: {
+                        //     display: false
+                        // }
                     }],
                 }
             },
@@ -269,7 +269,6 @@ export default class NetWork extends Component {
         //fake data for OTher
         let dataUsageThroughput = dataUsage.dataUsageThroughput
         let dataConnectPacketLoss = dataConnect.dataConnectPacketLoss
-        let dataConnectLatency = dataConnect.dataConnectLatency
         for (let i = 1; i <= 60; i++) {
             let a = {
                 x: i,
@@ -285,23 +284,22 @@ export default class NetWork extends Component {
             dataConnectPacketLoss.labels.push(i)
             dataConnectPacketLoss.datasets[0].data.push(a)
             dataConnectPacketLoss.datasets[1].data.push(b)
-            dataConnectLatency.labels.push(i)
-            dataConnectLatency.datasets[0].data.push(a)
-            dataConnectLatency.datasets[1].data.push(b)
         }
 
         dataUsageThroughput.datasets[1].data.map(item => { if (item.y > 0) item.y = 0 - (item.y) })
         dataConnectPacketLoss.datasets[1].data.map(item => { if (item.y > 0) item.y = 0 - (item.y) })
-        dataConnectLatency.datasets[1].data.map(item => { if (item.y > 0) item.y = 0 - (item.y) })
+        
         this.setState({ dataUsage, dataConnect })
         this.setState({ totalNumberVolume: total, })
     }
     componentDidUpdate = () => {
         let requestUsageVolume = Object.assign({}, this.state.requestUsage.requestUsageVolume)
-
+        let requestConnectLatency = Object.assign({}, this.state.requestConnect.requestConnectLatency)
+        
         if (this.state.updateChart === true) {
+            let dataConnect = Object.assign([], this.state.dataConnect)
             let dataUsage = Object.assign([], this.state.dataUsage)
-
+            let dataConnectLatency = dataConnect.dataConnectLatency
             axios({
                 method: 'post',
                 url: '/druid/v2?pretty',
@@ -336,6 +334,43 @@ export default class NetWork extends Component {
                     dataUsage.dataUsageVolume.totalDataVolume = rawTotalDataVolume.value
                     this.setState({
                         dataUsage: dataUsage,
+                        updateChart: false,
+                    })
+                })
+                .catch(err => console.error(err));
+            axios({
+                method: 'post',
+                url: '/druid/v2?pretty',
+                proxy: {
+                    host: '10.144.28.112',
+                    port: 8082
+                },
+                data: requestConnectLatency,
+                config: {
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Access-Control-Allow-Origin': '*',
+                    }
+                }
+            })
+                .then(resp => {
+                    resp.data.map((item,index)=> {
+                            let a = {
+                                x: index+1,
+                                y: Math.floor(item.result.Sumclient_delay/item.result.Sum_client_delayNotZero)
+                            }
+                            let b = {
+                                x: index+1,
+                                y: Math.floor(item.result.SumRstd/item.result.Sum_stdNotZero)
+                            }
+                            dataConnectLatency.labels.push(index+1)
+                            dataConnectLatency.datasets[0].data.push(a)
+                            dataConnectLatency.datasets[1].data.push(b)
+                        
+                    })
+                    dataConnectLatency.datasets[1].data.map(item => { if (item.y > 0) item.y = 0 - (item.y) })
+                    this.setState({
+                        dataConnect: dataConnect,
                         updateChart: false,
                     })
                 })

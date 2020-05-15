@@ -33,6 +33,7 @@ export default class Connectivity extends Component {
         } = this.props;
         return (
             <div>
+            {console.log(this.props.dataConnect)}
                 {/* card Package Loss for desktop */}
                 <div className="card card-chart card-info">
                     <div className="card-header ">
