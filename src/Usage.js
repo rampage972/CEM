@@ -4,7 +4,7 @@ import { Doughnut, Bar } from 'react-chartjs-2'
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import DataUsageIcon from '@material-ui/icons/DataUsage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTachometerAlt } from '@fortawesome/free-solid-svg-icons'
+import { faTachometerAlt, faUser } from '@fortawesome/free-solid-svg-icons'
 
 export default class Usage extends Component {
     constructor() {
@@ -34,10 +34,10 @@ export default class Usage extends Component {
                     <div className="card-header ">
                         <div className="row">
                             <div className="col-lg-2 paddingLeftCardIcon">
-                                <PersonOutlineIcon className="cardTitle-Icon" />
+                                <FontAwesomeIcon icon={faUser} className="cardTitle-Icon" />
                             </div>
-                            <div className="col-lg-10 cardTitle-lable-container">
-                                <div className="cardTitle-lable ">
+                            <div className="col-lg-10 cardTitle-label-container">
+                                <div className="cardTitle-label ">
                                     <h4 className="card-title">Active Subcribers per Minute</h4>
                                     <p className="noMargin">Number of subcribers having active sessions</p>
                                 </div>
@@ -52,7 +52,7 @@ export default class Usage extends Component {
                                         <div className="row">
                                             <div className="col-lg-6 text-left">
                                                 <div className="setToCenter">
-                                                    <p style={{ margin: "0" }}>Now</p>
+                                                    <p className="cardBody-label">Now</p>
                                                     <span className="TotalNumber">{this.props.totalNumberVolume.toFixed(1)} %</span>
 
                                                 </div>
@@ -60,7 +60,7 @@ export default class Usage extends Component {
                                             <div className="col-lg-6 text-left">
                                                 <div className="setToCenter">
                                                     <div className="volumePerSub-container">
-                                                        <p style={{ margin: "0" }}>Today's Peak Minute</p>
+                                                        <p className="cardBody-label">Today's Peak Minute</p>
                                                         <span className="TotalNumber ">{this.props.totalNumberVolume.toFixed(1)} %</span>
 
                                                     </div>
@@ -98,7 +98,7 @@ export default class Usage extends Component {
                                 <PersonOutlineIcon className="cardTitle-Icon" />
                             </div>
                             <div className="col-md-12">
-                                <div className="cardTitle-lable">
+                                <div className="cardTitle-label">
                                     <h4 className="card-title">Active Subcribers per Minute</h4>
                                     <p>Number of subcribers having active sessions</p>
                                 </div>
@@ -158,8 +158,8 @@ export default class Usage extends Component {
                             <div className="col-lg-2 paddingLeftCardIcon">
                                 <FontAwesomeIcon icon={faTachometerAlt} className="cardTitle-Icon" />
                             </div>
-                            <div className="col-lg-10 cardTitle-lable-container">
-                                <div className="cardTitle-lable">
+                            <div className="col-lg-10 cardTitle-label-container">
+                                <div className="cardTitle-label">
                                     <h4 className="card-title">Throughput</h4>
                                     <p className="noMargin">Throughput between subscribers and external servers</p>
                                 </div>
@@ -174,7 +174,7 @@ export default class Usage extends Component {
                                         <div className="row">
                                             <div className="col-lg-4 text-left">
                                                 <div className="setToCenter">
-                                                    <p style={{ margin: "0" }}>Now </p>
+                                                    <p className="cardBody-label">Now </p>
                                                     <span className="TotalNumber">{this.props.totalNumberVolume.toFixed(1)} %</span>
                                                 </div>
                                             </div>
@@ -182,7 +182,7 @@ export default class Usage extends Component {
                                                 <div className="setToCenter">
 
                                                     <div className="volumePerSub-container">
-                                                        <p style={{ margin: "0" }}>Today </p>
+                                                        <p className="cardBody-label">Today </p>
                                                         <span className="TotalNumber ">{this.props.totalNumberVolume.toFixed(1)} %</span>
 
                                                     </div>
@@ -191,7 +191,7 @@ export default class Usage extends Component {
                                             <div className="col-lg-4 text-left">
                                                 <div className="setToCenter">
 
-                                                <div className="legend-container">
+                                                    <div className="legend-container">
                                                         <ul className="mt-8" type="none" style={{ padding: "0" }}>
                                                             {legendBarThroughput && legendBarThroughput.length &&
                                                                 legendBarThroughput.map((item, key) => {
@@ -209,7 +209,7 @@ export default class Usage extends Component {
 
                                                                             </div>
                                                                             <span className="legendLabel">{item.text}</span>
-                                                                           
+
                                                                         </li>
                                                                     );
                                                                 })}
@@ -250,7 +250,7 @@ export default class Usage extends Component {
                                 <DataUsageIcon className="cardTitle-Icon" />
                             </div>
                             <div className="col-lg-12">
-                                <div className="cardTitle-lable">
+                                <div className="cardTitle-label">
                                     <h4 className="card-title">Throughput</h4>
                                     <p>Throughput between subscribers and external servers</p>
                                 </div>
@@ -353,8 +353,8 @@ export default class Usage extends Component {
 
                                 <DataUsageIcon className="cardTitle-Icon" />
                             </div>
-                            <div className="col-lg-10 cardTitle-lable-container">
-                                <div className="cardTitle-lable">
+                            <div className="col-lg-10 cardTitle-label-container">
+                                <div className="cardTitle-label">
                                     <h4 className="card-title">VOLUME</h4>
                                     <p className="noMargin">Total payload traffic generated by all subcribers</p>
                                 </div>
@@ -374,16 +374,14 @@ export default class Usage extends Component {
                                     />
                                 </div>
                             </div>
-
-
                             <div className="col-xl-8 ">
                                 <div className="row">
                                     <div className="col-lg-5 text-left noPadding">
                                         <div className="setToCenter">
                                             <div className="legend-container">
                                                 <div className="ct-chart" id="dailySalesChart">
-                                                    <p style={{ margin: "0" }}>Today</p>
-                                                    <span className="TotalNumber">{this.props.totalNumberVolume.toFixed(1)} TB</span>
+                                                    <p className="cardBody-label">Total</p>
+                                                    <span className="TotalNumber">{this.props.dataUsage.dataUsageVolume.totalDataVolume + " " + this.props.dataUsage.dataUsageVolume.labelData[2]}</span>
                                                     <div className="legend-container">
                                                         <ul className="mt-8" type="none" style={{ padding: "0" }}>
                                                             {legendDoughnutVolume && legendDoughnutVolume.length &&
@@ -403,8 +401,8 @@ export default class Usage extends Component {
                                                                             </div>
                                                                             <span className="legendLabel">{item.text}</span>
                                                                             {item.text === "Uplink" ?
-                                                                                <span style={{ fontWeight: "bold" }}> {this.props.dataUsage.dataUsageVolume.datasets[0].data[0]} TB</span>
-                                                                                : <span style={{ fontWeight: "bold" }}> {this.props.dataUsage.dataUsageVolume.datasets[0].data[1]} TB</span>
+                                                                                <span style={{ fontWeight: "bold" }}> {this.props.dataUsage.dataUsageVolume.datasets[0].data[0]+" "+this.props.dataUsage.dataUsageVolume.labelData[0]}</span>
+                                                                                : <span style={{ fontWeight: "bold" }}> {this.props.dataUsage.dataUsageVolume.datasets[0].data[1]+" "+this.props.dataUsage.dataUsageVolume.labelData[1]}</span>
 
                                                                             }
                                                                         </li>
@@ -421,7 +419,7 @@ export default class Usage extends Component {
                                         <div className="setToCenter">
 
                                             <div className="volumePerSub-container">
-                                                <p style={{ margin: "0" }}>Average Volume per Subscriber</p>
+                                                <p className="cardBody-label">Average Volume per Subscriber</p>
                                                 <span className="TotalNumber ">{this.props.totalNumberVolume.toFixed(1)} MB</span>
 
                                             </div>
@@ -444,7 +442,7 @@ export default class Usage extends Component {
                                 <DataUsageIcon className="cardTitle-Icon" />
                             </div>
                             <div className="col-md-12">
-                                <div className="cardTitle-lable">
+                                <div className="cardTitle-label">
                                     <h4 className="card-title">VOLUME</h4>
                                     <p style={{ margin: 0 }}>Total payload traffic generated by all subcribers</p>
                                 </div>

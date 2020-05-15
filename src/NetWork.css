@@ -1,3 +1,4 @@
+
 .chart-container {
     width: 100%;
     height: 100%;
@@ -11,7 +12,7 @@
 .toggleSubMenu {
     transform: translate(1em,0);
 }
-.cardTitle-lable {
+.cardTitle-label {
     padding-top: 1em;
     position: unset;
     text-align: center;
@@ -76,16 +77,22 @@
 }
 @media screen and (min-width: 1024px) {
     .cardTitle-Icon {
-        width: 100% !important;
+        width: 55% !important;
         height: 100% !important;
         transform: scale(1);
     }
-    .cardTitle-lable {
+    .cardTitle-label {
         padding-top: 0;
         text-align: left;
     
+        
     }
-    .cardTitle-lable-container {
+    .cardBody-label {
+       margin: 0;
+       font-size: 0.6vw;
+    
+    }
+    .cardTitle-label-container {
         display: flex;
     align-items: center;
     }

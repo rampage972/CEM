@@ -4,15 +4,30 @@ import Connectivity from './Connectivity'
 import SearchIcon from '@material-ui/icons/Search';
 import { Doughnut, Bar } from 'react-chartjs-2'
 import './NetWork.css'
-import DataUsageIcon from '@material-ui/icons/DataUsage';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import axios from 'axios'
+import {
+    DatePicker,
+    TimePicker,
+    DateTimePicker,
+    MuiPickersUtilsProvider,
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 import { faUser, faProjectDiagram, faEllipsisV, faBars, faMapMarkerAlt, faPlaneDeparture } from '@fortawesome/free-solid-svg-icons'
 // import SideBarBackGround from '../public/asset/image/sidebar.jpg'
 export default class NetWork extends Component {
     constructor() {
         super()
         this.state = {
+            typeofInterVal: "day",
+            startDate: new Date("2019-12-08T23:48:00.000Z"),
+            endDate: new Date("2019-12-08T23:58:00.000Z"),
             isUserMenuOpen: false,
             isMenuMiniOpened: false,
             currentWidth: 0,
@@ -20,8 +35,66 @@ export default class NetWork extends Component {
             legendDoughnutVolume: [],
             legendBarLatency: [],
             totalNumberVolume: 0,
+            requestUsage: {
+                requestUsageVolume: {
+                    "queryType": "timeseries",
+                    "dataSource": "nio20191208FULL",
+                    "descending": "false",
+                    "granularity": "day",
+                    "aggregations": [
+                        {
+                            "type": "longSum",
+                            "name": "vol_in",
+                            "fieldName": "Rvol_in"
+                        },
+                        {
+                            "type": "longSum",
+                            "name": "vol_out",
+                            "fieldName": "Rvol_out"
+                        }
+
+                    ],
+                    "intervals": ["2019-12-08T00:48:00.000Z/2019-12-08T23:58:00.000Z" ]
+                }
+
+            },
+            requestConnect: {
+                requestConnectLatency: {
+                    "queryType": "timeseries",
+                    "dataSource": "nio20191208FULL",
+                    "descending": "false",
+                    "granularity": "hour",
+                    "aggregations": [
+                        {
+                            "type": "longSum",
+                            "name": "Sumclient_delay",
+                            "fieldName": "Rclient_delay"
+                        },
+                        {
+                            "type": "longSum",
+                            "name": "Sum_client_delayNotZero",
+                            "fieldName": "client_delayNotZero"
+                        },
+                        {
+                            "type": "longSum",
+                            "name": "SumRstd",
+                            "fieldName": "Rstd"
+                        },
+                        {
+                            "type": "longSum",
+                            "name": "Sum_stdNotZero",
+                            "fieldName": "stdNotZero"
+                        }
+
+                    ],
+                    "intervals": ["2019-12-08T20:48:00.000Z/2019-12-08T23:58:00.000Z"]
+                }
+
+            },
             dataUsage: {
                 dataUsageVolume: {
+                    labelData: [],
+                    totalDataVolume: 0,
                     labels: ['Uplink', 'Downlink'],
                     fontSize: 10,
                     position: "left",
@@ -173,7 +246,8 @@ export default class NetWork extends Component {
                         }
                     }],
                 }
-            }
+            },
+            updateChart: true
         }
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     }
@@ -181,9 +255,6 @@ export default class NetWork extends Component {
         let dataUsage = Object.assign([], this.state.dataUsage)
         let dataConnect = Object.assign([], this.state.dataConnect)
         let total = (dataUsage.dataUsageVolume.datasets[0].data[0] + dataUsage.dataUsageVolume.datasets[0].data[1])
-
-
-
 
         //fake data for Subcriber
         let dataUsageActiveSubcriber = dataUsage.dataUsageActiveSubcriber
@@ -224,6 +295,53 @@ export default class NetWork extends Component {
         dataConnectLatency.datasets[1].data.map(item => { if (item.y > 0) item.y = 0 - (item.y) })
         this.setState({ dataUsage, dataConnect })
         this.setState({ totalNumberVolume: total, })
+    }
+    componentDidUpdate = () => {
+        let requestUsageVolume = Object.assign({}, this.state.requestUsage.requestUsageVolume)
+
+        if (this.state.updateChart === true) {
+            let dataUsage = Object.assign([], this.state.dataUsage)
+
+            axios({
+                method: 'post',
+                url: '/druid/v2?pretty',
+                proxy: {
+                    host: '10.144.28.112',
+                    port: 8082
+                },
+                data: requestUsageVolume,
+                config: {
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Access-Control-Allow-Origin': '*',
+                    }
+                }
+            })
+                .then(resp => {
+                    let tmpUpLink = 0
+                    let tmpDownLink = 0
+                    resp.data.map(item => {
+                        tmpUpLink = tmpUpLink + item.result['vol_in']
+                        tmpDownLink += item.result['vol_out']
+
+                    })
+                    let rawTotalDataVolume = this.bytesToSize(tmpDownLink + tmpUpLink)
+                    let rawTmpUplink = this.bytesToSize(tmpUpLink)
+                    let rawTmpDownlink = this.bytesToSize(tmpDownLink)
+                    dataUsage.dataUsageVolume.datasets[0].data[0] = rawTmpUplink.value
+                    dataUsage.dataUsageVolume.datasets[0].data[1] = rawTmpDownlink.value
+                    dataUsage.dataUsageVolume.labelData[0] = rawTmpUplink.labelValue
+                    dataUsage.dataUsageVolume.labelData[1] = rawTmpDownlink.labelValue
+                    dataUsage.dataUsageVolume.labelData[2] = rawTotalDataVolume.labelValue
+                    dataUsage.dataUsageVolume.totalDataVolume = rawTotalDataVolume.value
+                    this.setState({
+                        dataUsage: dataUsage,
+                        updateChart: false,
+                    })
+                })
+                .catch(err => console.error(err));
+        }
+
     }
     componentDidMount = () => {
         // this.setState({ legendDoughnutVolume: this.doughnutVolume.chartInstance.legend.legendItems });
@@ -267,8 +385,52 @@ export default class NetWork extends Component {
             isUserMenuOpen: !this.state.isUserMenuOpen
         })
     }
+    handleChangeStartDate = (date) => {
+        this.setState({ startDate: date })
+    }
+    handleChangeEndDate = (date) => {
+        this.setState({ endDate: date })
+    }
+
+    handleSubmitDate = () => {
+        let startDate = this.state.startDate
+        let endDate = this.state.endDate
+        startDate = startDate.toISOString()
+        endDate = endDate.toISOString()
+        let requestUsage = Object.assign({}, this.state.requestUsage)
+        requestUsage.requestUsageVolume.intervals = [startDate + "/" + endDate]
+        this.setState({ requestUsage: requestUsage, updateChart: true })
+
+    }
+    bytesToSize = (bytes) => {
+        let sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+        let dataReturn = {
+            value: 0,
+            labelValue: ""
+        }
+        if (bytes == 0)
+            dataReturn.labelValue = "Byte";
+        else {
+            let i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+            if (i == 0) {
+                dataReturn.value = bytes
+                dataReturn.labelValue = sizes[i];
+            }
+            else {
+                dataReturn.value = (bytes / Math.pow(1024, i)).toFixed(1)
+                dataReturn.labelValue = sizes[i];
+            }
+        }
+        return dataReturn
+    };
+    handleChangeTypeOfInterval = (data) => {
+        let requestUsage = Object.assign({}, this.state.requestUsage)
+        requestUsage.requestUsageVolume['granularity'] = data.target.value
+        this.setState({ typeofInterVal: data.target.value, requestUsage: requestUsage, updateChart: true })
+
+    }
     render() {
-        const { isUserMenuOpen, isMenuMiniOpened, legendDoughnutVolume, legendBarLatency, optionsBarChart, isSubMenuOpened, currentWidth } = this.state
+        const { typeofInterVal, isUserMenuOpen, isMenuMiniOpened, endDate, startDate, optionsBarChart, isSubMenuOpened, currentWidth } = this.state
         return (
             <div className={isMenuMiniOpened ? "sidebar-mini" : ""}>
                 <div className="wrapper ">
@@ -307,17 +469,17 @@ export default class NetWork extends Component {
                                 {currentWidth <= 991 ?
                                     <li className="nav-item dropdown " onClick={() => this.openUserSubMenu()}>
                                         <a className="nav-link" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i className="material-icons"><FontAwesomeIcon icon={faUser} /></i>
+                                            <i className="material-icons"><FontAwesomeIcon icon={faUser} /></i>
                                             <p >
                                                 Account
                   </p>
                                         </a>
-                                        <div className={isUserMenuOpen ? "dropdown-menu dropdown-menu-right show" : "dropdown-menu dropdown-menu-right hidding"} aria-labelledby="navbarDropdownProfile" style={{backgroundColor:"transparent"}}>
+                                        <div className={isUserMenuOpen ? "dropdown-menu dropdown-menu-right show" : "dropdown-menu dropdown-menu-right hidding"} aria-labelledby="navbarDropdownProfile" style={{ backgroundColor: "transparent" }}>
                                             <a className="dropdown-item" href="#">Profile</a>
                                             <a className="dropdown-item" href="#">Settings</a>
                                             <div className="dropdown-divider"></div>
                                             <Link to="/login">
-                                            <a className="dropdown-item" href="#">Log out</a>
+                                                <span className="dropdown-item" href="#">Log out</span>
                                             </Link>
                                         </div>
                                     </li>
@@ -394,7 +556,7 @@ export default class NetWork extends Component {
                                                 <div className="dropdown-divider"></div>
                                                 <Link to="/login">
 
-                                                <a className="dropdown-item" href="#">Log out</a>
+                                                    <span className="dropdown-item" href="#">Log out</span>
                                                 </Link>
                                             </div>
                                         </li>
@@ -412,7 +574,51 @@ export default class NetWork extends Component {
                                 <div className="content">
                                     <div className="container-fluid">
                                         <div className="row">
-                                            <div className="col-lg-4 paddingLRCard">
+                                            <div className="col-md-4 paddingLRCard">
+                                                <div className="row">
+                                                    <div className="col-md-5">
+                                                        <span>Start Date</span>
+                                                        {/* <DateTime pickerOptions={{format:"LL"}} value="2017-04-20"/> */}
+                                                        <React.Fragment>
+                                                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                                                <DateTimePicker value={startDate} onChange={this.handleChangeStartDate} />
+
+                                                            </MuiPickersUtilsProvider>
+                                                        </React.Fragment>
+                                                        {/* <DatePicker
+                                                        selected={this.state.startDate}
+                                                        onChange={this.handleChangeStartDate}
+                                                    />
+                                                     */}
+                                                    </div>
+                                                    <div className="col-md-5">
+                                                        <span>End Date</span>
+                                                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                                            <DateTimePicker value={endDate} onChange={this.handleChangeEndDate} />
+                                                        </MuiPickersUtilsProvider>
+                                                        {/* <DatePicker
+                                                        selected={this.state.endDate}
+                                                        onChange={(e) => this.handleChangeEndDate(e)}
+                                                    /> */}
+                                                    </div>
+                                                    <div className="col-md-2">
+                                                        <button className="btn btn-white " onClick={() => this.handleSubmitDate()}>
+                                                            FIND
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="col-md-3">
+                                                <FormControl component="fieldset">
+                                                    <RadioGroup aria-label="gender" name="gender1" color="default" value={typeofInterVal} onChange={this.handleChangeTypeOfInterval}>
+                                                        <FormControlLabel value="minute" color="default" control={<Radio />} label="Minute" />
+                                                        <FormControlLabel value="hour" control={<Radio />} label="Hour" />
+                                                        <FormControlLabel value="day" control={<Radio />} label="Day" />
+                                                    </RadioGroup>
+                                                </FormControl>
+                                            </div>
+                                            <div className="col-md-5"></div>
+                                            <div className="col-md-4 paddingLRCard">
                                                 <Usage
                                                     dataUsage={this.state.dataUsage}
                                                     optionsBarChart={this.state.optionsBarChart}
@@ -422,7 +628,7 @@ export default class NetWork extends Component {
                                                 />
 
                                             </div>
-                                            <div className="col-lg-4 paddingLRCard">
+                                            <div className="col-md-4 paddingLRCard">
 
                                                 <Connectivity
                                                     dataConnect={this.state.dataConnect}

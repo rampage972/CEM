@@ -40,8 +40,8 @@ export default class Connectivity extends Component {
                             <div className="col-lg-2 paddingLeftCardIcon">
                             <FontAwesomeIcon icon={faHourglassHalf} className="cardTitle-Icon" />
                             </div>
-                            <div className="col-lg-10 cardTitle-lable-container">
-                                <div className="cardTitle-lable">
+                            <div className="col-lg-10 cardTitle-label-container">
+                                <div className="cardTitle-label">
                                     <h4 className="card-title">Package Loss</h4>
                                     <p className="noMargin">
                                         Estimated package loss calculated based on the TCP
@@ -59,7 +59,7 @@ export default class Connectivity extends Component {
                                         <div className="row">
                                             <div className="col-lg-4 text-left">
                                                 <div className="setToCenter">
-                                                    <p style={{ margin: "0" }}>Now Extenal</p>
+                                                    <p className="cardBody-label">Now Extenal</p>
                                                     <span className="TotalNumber">
                                                         {this.props.totalNumberVolume.toFixed(1)} %
                           </span>
@@ -67,7 +67,7 @@ export default class Connectivity extends Component {
                                             </div>
                                             <div className="col-lg-4 text-left">
                                                 <div className="setToCenter">
-                                                    <p style={{ margin: "0" }}>Current Hour Extenal</p>
+                                                    <p className="cardBody-label">Current Hour Extenal</p>
                                                     <span className="TotalNumber">
                                                         {this.props.totalNumberVolume.toFixed(1)} %
                           </span>
@@ -76,7 +76,7 @@ export default class Connectivity extends Component {
                                             <div className="col-lg-4 text-left">
                                                 <div className="setToCenter">
                                                     <div className="volumePerSub-container">
-                                                        <p style={{ margin: "0" }}>Today Extenal</p>
+                                                        <p className="cardBody-label">Today Extenal</p>
                                                         <span className="TotalNumber ">
                                                             {this.props.totalNumberVolume.toFixed(1)} %
                             </span>
@@ -104,7 +104,7 @@ export default class Connectivity extends Component {
                                         <div className="row">
                                             <div className="col-lg-4 text-left">
                                                 <div className="setToCenter">
-                                                    <p style={{ margin: "0" }}>Now Intenal</p>
+                                                    <p className="cardBody-label">Now Intenal</p>
                                                     <span className="TotalNumber">
                                                         {this.props.totalNumberVolume.toFixed(1)} %
                           </span>
@@ -112,7 +112,7 @@ export default class Connectivity extends Component {
                                             </div>
                                             <div className="col-lg-4 text-left">
                                                 <div className="setToCenter">
-                                                    <p style={{ margin: "0" }}>Current Hour Intenal</p>
+                                                    <p className="cardBody-label">Current Hour Intenal</p>
                                                     <span className="TotalNumber">
                                                         {this.props.totalNumberVolume.toFixed(1)} %
                           </span>
@@ -121,7 +121,7 @@ export default class Connectivity extends Component {
                                             <div className="col-lg-4 text-left">
                                                 <div className="setToCenter">
                                                     <div className="volumePerSub-container">
-                                                        <p style={{ margin: "0" }}>Today Intenal</p>
+                                                        <p className="cardBody-label">Today Intenal</p>
                                                         <span className="TotalNumber ">
                                                             {this.props.totalNumberVolume.toFixed(1)} %
                             </span>
@@ -149,7 +149,7 @@ export default class Connectivity extends Component {
                                 <DataUsageIcon className="cardTitle-Icon" />
                             </div>
                             <div className="col-md-12">
-                                <div className="cardTitle-lable">
+                                <div className="cardTitle-label">
                                     <h4 className="card-title">Package Loss</h4>
                                     <p>
                                         Estimated package loss calculated based on the TCP
@@ -256,8 +256,8 @@ export default class Connectivity extends Component {
                             <div className="col-lg-2 paddingLeftCardIcon">
                                 <FontAwesomeIcon icon={faHistory} className="cardTitle-Icon" />
                             </div>
-                            <div className="col-lg-10  cardTitle-lable-container">
-                                <div className="cardTitle-lable">
+                            <div className="col-lg-10  cardTitle-label-container">
+                                <div className="cardTitle-label">
                                     <h4 className="card-title">Latency</h4>
                                     <p className="noMargin">TCP handshake based latency</p>
                                 </div>
@@ -272,7 +272,7 @@ export default class Connectivity extends Component {
                                         <div className="row">
                                             <div className="col-lg-4 text-left">
                                                 <div className="setToCenter">
-                                                    <p style={{ margin: "0" }}>Now Extenal</p>
+                                                    <p className="cardBody-label">Now Extenal</p>
                                                     <span className="TotalNumber">
                                                         {this.props.totalNumberVolume.toFixed(1)} %
                           </span>
@@ -280,7 +280,7 @@ export default class Connectivity extends Component {
                                             </div>
                                             <div className="col-lg-4 text-left">
                                                 <div className="setToCenter">
-                                                    <p style={{ margin: "0" }}>Current Hour Extenal</p>
+                                                    <p className="cardBody-label">Current Hour Extenal</p>
                                                     <span className="TotalNumber">
                                                         {this.props.totalNumberVolume.toFixed(1)} %
                           </span>
@@ -289,7 +289,7 @@ export default class Connectivity extends Component {
                                             <div className="col-lg-4 text-left">
                                                 <div className="setToCenter">
                                                     <div className="volumePerSub-container">
-                                                        <p style={{ margin: "0" }}>Today Extenal</p>
+                                                        <p className="cardBody-label">Today Extenal</p>
                                                         <span className="TotalNumber ">
                                                             {this.props.totalNumberVolume.toFixed(1)} %
                             </span>
@@ -316,7 +316,7 @@ export default class Connectivity extends Component {
                                         <div className="row">
                                             <div className="col-lg-4 text-left">
                                                 <div className="setToCenter">
-                                                    <p style={{ margin: "0" }}>Now Intenal</p>
+                                                    <p className="cardBody-label">Now Intenal</p>
                                                     <span className="TotalNumber">
                                                         {this.props.totalNumberVolume.toFixed(1)} %
                           </span>
@@ -324,7 +324,7 @@ export default class Connectivity extends Component {
                                             </div>
                                             <div className="col-lg-4 text-left">
                                                 <div className="setToCenter">
-                                                    <p style={{ margin: "0" }}>Current Hour Intenal</p>
+                                                    <p className="cardBody-label">Current Hour Intenal</p>
                                                     <span className="TotalNumber">
                                                         {this.props.totalNumberVolume.toFixed(1)} %
                           </span>
@@ -333,7 +333,7 @@ export default class Connectivity extends Component {
                                             <div className="col-lg-4 text-left">
                                                 <div className="setToCenter">
                                                     <div className="volumePerSub-container">
-                                                        <p style={{ margin: "0" }}>Today Intenal</p>
+                                                        <p className="cardBody-label">Today Intenal</p>
                                                         <span className="TotalNumber ">
                                                             {this.props.totalNumberVolume.toFixed(1)} %
                             </span>
@@ -361,7 +361,7 @@ export default class Connectivity extends Component {
                                 <DataUsageIcon className="cardTitle-Icon" />
                             </div>
                             <div className="col-md-12">
-                                <div className="cardTitle-lable">
+                                <div className="cardTitle-label">
                                     <h4 className="card-title">Latency</h4>
                                     <p>TCP handshake based latency</p>
                                 </div>
