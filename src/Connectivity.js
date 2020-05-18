@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { Doughnut, Bar } from "react-chartjs-2";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHistory,faHourglassHalf} from '@fortawesome/free-solid-svg-icons'
+import { faHistory, faHourglassHalf } from '@fortawesome/free-solid-svg-icons'
 import DataUsageIcon from "@material-ui/icons/DataUsage";
 export default class Connectivity extends Component {
     constructor() {
@@ -11,9 +11,13 @@ export default class Connectivity extends Component {
         this.state = {
             legendDoughnutVolume: [],
             legendBarLatency: [],
+            dataConnect: {},
+            dataConnectLatency: [],
+            dataConnectPacketLoss: []
         };
     }
     componentDidMount = () => {
+
         if (this.doughnutVolume) {
             this.setState({
                 legendDoughnutVolume: this.doughnutVolume.chartInstance.legend
@@ -27,19 +31,17 @@ export default class Connectivity extends Component {
     };
     render() {
         const {
-            legendDoughnutVolume,
-            legendBarLatency,
-            optionsBarChart,
+            dataConnect,
+
         } = this.props;
         return (
             <div>
-            {console.log(this.props.dataConnect)}
                 {/* card Package Loss for desktop */}
                 <div className="card card-chart card-info">
                     <div className="card-header ">
                         <div className="row">
                             <div className="col-lg-2 paddingLeftCardIcon">
-                            <FontAwesomeIcon icon={faHourglassHalf} className="cardTitle-Icon" />
+                                <FontAwesomeIcon icon={faHourglassHalf} className="cardTitle-Icon" />
                             </div>
                             <div className="col-lg-10 cardTitle-label-container">
                                 <div className="cardTitle-label">
@@ -92,8 +94,9 @@ export default class Connectivity extends Component {
                             <div className="col-lg-12">
                                 <div className="upperBar">
                                     <Bar
+                                        redraw
                                         ref={(ref) => (this.barLatency = ref)}
-                                        data={this.props.dataConnect.dataConnectPacketLoss}
+                                        data={dataConnect.dataConnectPacketLoss}
                                         options={this.props.optionsBarToNegativeNumb}
                                     />
                                 </div>
@@ -301,12 +304,12 @@ export default class Connectivity extends Component {
                                     </div>
                                 </div>
                             </div>
-
                             <div className="col-lg-12">
                                 <div className="upperBar">
                                     <Bar
-                                        ref={(ref) => (this.barLatency = ref)}
-                                        data={this.props.dataConnect.dataConnectLatency}
+                                        redraw
+                                        ref={ref => (this.barLatency = ref)}
+                                        data={dataConnect.dataConnectLatency}
                                         options={this.props.optionsBarToNegativeNumb}
                                     />
                                 </div>
@@ -410,7 +413,7 @@ export default class Connectivity extends Component {
                                 <div className="upperBar">
                                     <Bar
                                         ref={(ref) => (this.barLatency = ref)}
-                                        data={this.props.dataConnect.dataConnectLatency}
+                                        data={dataConnect.dataConnectLatency}
                                         options={this.props.optionsBarToNegativeNumb}
                                     />
                                 </div>

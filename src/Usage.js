@@ -24,11 +24,21 @@ export default class Usage extends Component {
         this.barThroughput && this.setState({ legendBarThroughput: this.barThroughput.chartInstance.legend.legendItems });
 
     }
+    findPeakActiveSub = () => {
+        let biggestNumb = 0
+        this.props.dataUsage.dataUsageActiveSubcriber.datasets[0].data.map(item => {
+            if(biggestNumb<item.y)
+            biggestNumb=item.y
+        })
+        console.log(biggestNumb)
+        return biggestNumb
+    }
     render() {
         const { legendDoughnutVolume, legendBarThroughput, optionsBarChart } = this.state
 
         return (
             <div>
+                {console.log(this.props.dataUsage.dataUsageActiveSubcriber.datasets[0].data)}
                 {/* card activeSubs for desktop */}
                 <div className="card card-chart card-info">
                     <div className="card-header ">
@@ -61,7 +71,11 @@ export default class Usage extends Component {
                                                 <div className="setToCenter">
                                                     <div className="volumePerSub-container">
                                                         <p className="cardBody-label">Today's Peak Minute</p>
-                                                        <span className="TotalNumber ">{this.props.totalNumberVolume.toFixed(1)} %</span>
+                                                        {this.props.dataUsage.dataUsageActiveSubcriber.datasets[0].data.length > 0 ?
+                                                            <span className="TotalNumber ">{this.findPeakActiveSub()}</span>
+                                                            :
+                                                            <span className="TotalNumber ">0</span>
+                                                        }
 
                                                     </div>
                                                 </div>
@@ -72,7 +86,7 @@ export default class Usage extends Component {
                             </div>
                             <div className="col-lg-12">
                                 <div className="upperBar">
-                                    <Bar
+                                    <Bar redraw
                                         ref={ref => (this.barLatency = ref)}
                                         data={this.props.dataUsage.dataUsageActiveSubcriber}
                                         options={this.props.optionsBarToNegativeNumb}
@@ -133,7 +147,7 @@ export default class Usage extends Component {
                             </div>
                             <div className="col-lg-12">
                                 <div className="upperBar">
-                                    <Bar
+                                    <Bar redraw
                                         ref={ref => (this.barLatency = ref)}
                                         data={this.props.dataUsage.dataUsageActiveSubcriber}
                                         options={this.props.optionsBarToNegativeNumb}
@@ -172,32 +186,17 @@ export default class Usage extends Component {
                                 <div className="legend-container">
                                     <div className="ct-chart" id="dailySalesChart">
                                         <div className="row">
-                                            <div className="col-lg-4 text-left">
+                                            <div className="col-lg-6 text-left">
                                                 <div className="setToCenter">
-                                                    <p className="cardBody-label">Now </p>
-                                                    <span className="TotalNumber">{this.props.totalNumberVolume.toFixed(1)} %</span>
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-4 text-left">
-                                                <div className="setToCenter">
-
-                                                    <div className="volumePerSub-container">
-                                                        <p className="cardBody-label">Today </p>
-                                                        <span className="TotalNumber ">{this.props.totalNumberVolume.toFixed(1)} %</span>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-4 text-left">
-                                                <div className="setToCenter">
-
+                                                    <p className="cardBody-label">Total </p>
+                                                    <span className="TotalNumber">{this.props.dataUsage.dataUsageThroughput.totalUpDown + " " + this.props.dataUsage.dataUsageThroughput.labelsTotal[2]} </span>
                                                     <div className="legend-container">
                                                         <ul className="mt-8" type="none" style={{ padding: "0" }}>
                                                             {legendBarThroughput && legendBarThroughput.length &&
                                                                 legendBarThroughput.map((item, key) => {
                                                                     return (
                                                                         <li key={key} >
-                                                                            <div
+                                                                            {/* <div
                                                                                 style={{
                                                                                     display: "inline-block",
                                                                                     float: "left",
@@ -207,8 +206,12 @@ export default class Usage extends Component {
                                                                                 }}
                                                                             >
 
-                                                                            </div>
-                                                                            <span className="legendLabel">{item.text}</span>
+                                                                            </div> */}
+                                                                            {key === 0 ?
+                                                                                <span >{item.text + " " + this.props.dataUsage.dataUsageThroughput.totalUplink + " " + this.props.dataUsage.dataUsageThroughput.labelsTotal[key]} </span>
+                                                                                :
+                                                                                <span >{item.text + " " + this.props.dataUsage.dataUsageThroughput.totalDownlink + " " + this.props.dataUsage.dataUsageThroughput.labelsTotal[key]} </span>
+                                                                            }
 
                                                                         </li>
                                                                     );
@@ -217,6 +220,14 @@ export default class Usage extends Component {
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div className="col-lg-6 text-left">
+                                                <div className="setToCenter">
+                                                    <div className="volumePerSub-container">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         </div>
 
                                     </div>
@@ -226,9 +237,10 @@ export default class Usage extends Component {
                             <div className="col-lg-12">
                                 <div className="upperBar">
                                     <Bar
+                                        redraw
                                         ref={ref => (this.barThroughput = ref)}
                                         data={this.props.dataUsage.dataUsageThroughput}
-                                        options={this.props.optionsBarToNegativeNumb}
+                                        options={this.props.optionsBarToNegativeNumbThroughtPut}
                                     />
                                 </div>
 
@@ -295,9 +307,10 @@ export default class Usage extends Component {
                             <div className="col-lg-12">
                                 <div className="upperBar">
                                     <Bar
+                                        redraw
                                         ref={ref => (this.barLatency = ref)}
                                         data={this.props.dataUsage.dataUsageThroughput}
-                                        options={this.props.optionsBarToNegativeNumb}
+                                        options={this.props.optionsBarToNegativeNumbThroughtPut}
                                     />
                                 </div>
 
@@ -368,6 +381,7 @@ export default class Usage extends Component {
                             <div className="col-xl-4">
                                 <div className="chart-container">
                                     <Doughnut
+                                        redraw
                                         ref={ref => (this.doughnutVolume = ref)}
                                         data={this.props.dataUsage.dataUsageVolume}
                                         options={this.props.optionsDoughVolume}
@@ -401,8 +415,8 @@ export default class Usage extends Component {
                                                                             </div>
                                                                             <span className="legendLabel">{item.text}</span>
                                                                             {item.text === "Uplink" ?
-                                                                                <span style={{ fontWeight: "bold" }}> {this.props.dataUsage.dataUsageVolume.datasets[0].data[0]+" "+this.props.dataUsage.dataUsageVolume.labelData[0]}</span>
-                                                                                : <span style={{ fontWeight: "bold" }}> {this.props.dataUsage.dataUsageVolume.datasets[0].data[1]+" "+this.props.dataUsage.dataUsageVolume.labelData[1]}</span>
+                                                                                <span style={{ fontWeight: "bold" }}> {this.props.dataUsage.dataUsageVolume.datasets[0].data[0] + " " + this.props.dataUsage.dataUsageVolume.labelData[0]}</span>
+                                                                                : <span style={{ fontWeight: "bold" }}> {this.props.dataUsage.dataUsageVolume.datasets[0].data[1] + " " + this.props.dataUsage.dataUsageVolume.labelData[1]}</span>
 
                                                                             }
                                                                         </li>
@@ -456,6 +470,7 @@ export default class Usage extends Component {
                             <div className="col-md-12 ">
                                 <div className="chart-container">
                                     <Doughnut
+                                        redraw
                                         ref={ref => (this.doughnutVolume = ref)}
                                         data={this.props.dataUsage.dataUsageVolume}
                                         options={this.props.optionsDoughVolume}

@@ -25,9 +25,9 @@ export default class NetWork extends Component {
     constructor() {
         super()
         this.state = {
-            typeofInterVal: "day",
-            startDate: new Date("2019-12-08T23:48:00.000Z"),
-            endDate: new Date("2019-12-08T23:58:00.000Z"),
+            typeofInterVal: "hour",
+            startDate: new Date(),
+            endDate: new Date(),
             isUserMenuOpen: false,
             isMenuMiniOpened: false,
             currentWidth: 0,
@@ -40,7 +40,7 @@ export default class NetWork extends Component {
                     "queryType": "timeseries",
                     "dataSource": "nio20191208FULL",
                     "descending": "false",
-                    "granularity": "day",
+                    "granularity": "hour",
                     "aggregations": [
                         {
                             "type": "longSum",
@@ -54,7 +54,64 @@ export default class NetWork extends Component {
                         }
 
                     ],
-                    "intervals": ["2019-12-08T00:48:00.000Z/2019-12-08T23:58:00.000Z" ]
+                    "intervals": ["2019-12-08T00:48:00.000Z/2019-12-08T23:58:00.000Z"]
+                },
+                requestUsageThroughput: {
+                    "queryType": "timeseries",
+                    "dataSource": "nio20191208FULL",
+                    "descending": "false",
+                    "granularity": "hour",
+                    "aggregations": [
+                        {
+                            "type": "longSum",
+                            "name": "Sumvol_in",
+                            "fieldName": "Rvol_in"
+                        },
+                        {
+                            "type": "longSum",
+                            "name": "Sumvol_out",
+                            "fieldName": "Rvol_out"
+                        }
+
+                    ],
+                    "postAggregations": [
+                        {
+                            "type": "arithmetic",
+                            "name": "ThroughPutVolIn",
+                            "fn": "/",
+                            "fields": [
+                                { "type": "fieldAccess", "name": "postAgg__vol_in", "fieldName": "Sumvol_in" },
+                                { "type": "constant", "name": "const111111111111", "value": 3600 }
+
+                            ]
+                        },
+                        {
+                            "type": "arithmetic",
+                            "name": "ThroughPutVolOut",
+                            "fn": "/",
+                            "fields": [
+                                { "type": "fieldAccess", "name": "postAgg__vol_in", "fieldName": "Sumvol_out" },
+                                { "type": "constant", "name": "const111111111111", "value": 3600 }
+
+                            ]
+                        }
+                    ],
+                    "intervals": ["2019-12-08T20:48:00.000Z/2019-12-08T23:58:00.000Z"]
+                },
+                requestUsageActiveSubcriber: {
+                    "queryType": "timeseries",
+                    "dataSource": "nio20191208FULL",
+                    "descending": "false",
+                    "granularity": "hour",
+                    "aggregations": [
+                        {
+                            "type": "cardinality",
+                            "name": "distinct_msisdn",
+                            "fields": ["msisdn"],
+                            "byRow": false
+                        }
+                    ],
+                    "intervals": ["2019-12-08T00:48:00.000Z/2019-12-08T23:58:00.000Z"]
                 }
 
             },
@@ -88,6 +145,61 @@ export default class NetWork extends Component {
 
                     ],
                     "intervals": ["2019-12-08T20:48:00.000Z/2019-12-08T23:58:00.000Z"]
+                },
+                requestConnectPacketLoss: {
+                    "queryType": "timeseries",
+                    "dataSource": "nio20191208FULL",
+                    "descending": "false",
+                    "granularity": "hour",
+                    "aggregations": [
+                        {
+                            "type": "longSum",
+                            "name": "rxmit_pkt_in",
+                            "fieldName": "Rrxmit_pkt_in"
+                        },
+                        {
+                            "type": "longSum",
+                            "name": "pkt_in",
+                            "fieldName": "Rpkt_in"
+                        },
+                        {
+                            "type": "longSum",
+                            "name": "rxmit_pkt_out",
+                            "fieldName": "Rrxmit_pkt_out"
+                        },
+                        {
+                            "type": "longSum",
+                            "name": "pkt_out",
+                            "fieldName": "Rpkt_out"
+                        }
+
+                    ],
+                    "postAggregations": [
+                        {
+                            "type": "arithmetic",
+                            "name": "POstrxmit_pkt_in",
+                            "fn": "/",
+                            "fields": [
+                                { "type": "fieldAccess", "name": "postAgg__rxmit_pkt_in", "fieldName": "rxmit_pkt_in" },
+                                { "type": "fieldAccess", "name": "postAgg__pkt_in", "fieldName": "pkt_in" }
+
+                            ]
+                        },
+
+                        {
+                            "type": "arithmetic",
+                            "name": "POstrxmit_pkt_OUT",
+                            "fn": "/",
+                            "fields": [
+                                { "type": "fieldAccess", "name": "postAgg__rxmit_pkt_OUT", "fieldName": "rxmit_pkt_out" },
+                                { "type": "fieldAccess", "name": "postAgg__pkt_OUT", "fieldName": "pkt_out" }
+
+                            ]
+                        },
+
+                        { "type": "constant", "name": "const111111111111", "value": 100 }
+                    ],
+                    "intervals": ["2019-12-08T20:48:00.000Z/2019-12-08T23:58:00.000Z"]
                 }
 
             },
@@ -113,7 +225,22 @@ export default class NetWork extends Component {
                     }]
                 },
                 dataUsageThroughput: {
+                    dataTranfer: {
+                        uplink: [],
+                        downlink: [],
+                        labelTransferUplink: [],
+                        labelTransferDownlink: []
+                    },
+                    totalUplink: 0,
+                    totalDownlink: 0,
+                    totalUpDown: 0,
+                    labelsTotal: ['byte', 'byte', 'byte'],
                     labels: [],
+                    labelData: {
+                        uplink: [],
+                        downlink: []
+                    }
+                    ,
                     fontSize: 10,
                     position: "left",
                     datasets: [{
@@ -142,24 +269,7 @@ export default class NetWork extends Component {
                     }
                     ]
                 },
-                dataUsageThroughput: {
-                    labels: [],
-                    fontSize: 10,
-                    position: "left",
-                    datasets: [{
-                        label: 'one',
-                        data: [
-                        ],
-                        backgroundColor: '#5073b7'
-                    },
-                    {
-                        label: 'two',
-                        data: [
-                        ],
-                        backgroundColor: '#bbcaef'
-                    }
-                    ]
-                },
+
             },
             dataConnect: {
                 dataConnectPacketLoss: {
@@ -223,7 +333,8 @@ export default class NetWork extends Component {
                 tooltips: {
                     callbacks: {
                         label: function (tooltipItem, data) {
-                            let value = parseInt(tooltipItem.value, 10)
+
+                            let value = parseFloat(tooltipItem.value).toFixed(2)
                             value = Math.abs(value)
                             return value
                         },
@@ -231,19 +342,58 @@ export default class NetWork extends Component {
                 },
                 scales: {
                     xAxes: [{
+                        stacked: true,
                         categoryPercentage: 1.0,
                         barPercentage: 1.0,
-                        stacked: true,
                         display: false,
                         ticks: {
-                            display: false
-                        }
+                            display: false,
+                            min: 0
+                        },
                     }],
                     yAxes: [{
                         stacked: true,
-                        // ticks: {
-                        //     display: false
-                        // }
+                        ticks: {
+                            display: false,
+                            beginAtZero: true
+                        }
+                    }],
+                }
+            },
+            optionsBarToNegativeNumbThroughtPut: {
+                legend: {
+                    display: false
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function (tooltipItem, data) {
+                            let index = tooltipItem.index
+                            let value = parseFloat(tooltipItem.value).toFixed(2)
+                            value = Math.abs(value)
+                            if (tooltipItem.datasetIndex === 0)
+                                return data.dataTranfer.uplink[index].value + " " + data.dataTranfer.labelTransferUplink[index]
+                            else
+                                return data.dataTranfer.uplink[index].value + " " + data.dataTranfer.labelTransferDownlink[index]
+                        },
+                    }
+                },
+                scales: {
+                    xAxes: [{
+                        stacked: true,
+                        categoryPercentage: 1.0,
+                        barPercentage: 1.0,
+                        display: false,
+                        ticks: {
+                            display: false,
+                            min: 0
+                        },
+                    }],
+                    yAxes: [{
+                        stacked: true,
+                        ticks: {
+                            display: false,
+                            beginAtZero: true
+                        }
                     }],
                 }
             },
@@ -258,48 +408,20 @@ export default class NetWork extends Component {
 
         //fake data for Subcriber
         let dataUsageActiveSubcriber = dataUsage.dataUsageActiveSubcriber
-        for (let i = 1; i <= 1000; i++) {
-            let a = {
-                x: i,
-                y: Math.floor(Math.random() * 100)
-            }
-            dataUsageActiveSubcriber.labels.push(i)
-            dataUsageActiveSubcriber.datasets[0].data.push(a)
-        }
-        //fake data for OTher
-        let dataUsageThroughput = dataUsage.dataUsageThroughput
-        let dataConnectPacketLoss = dataConnect.dataConnectPacketLoss
-        for (let i = 1; i <= 60; i++) {
-            let a = {
-                x: i,
-                y: Math.floor(Math.random() * 100)
-            }
-            let b = {
-                x: i,
-                y: Math.floor(Math.random() * 100)
-            }
-            dataUsageThroughput.labels.push(i)
-            dataUsageThroughput.datasets[0].data.push(a)
-            dataUsageThroughput.datasets[1].data.push(b)
-            dataConnectPacketLoss.labels.push(i)
-            dataConnectPacketLoss.datasets[0].data.push(a)
-            dataConnectPacketLoss.datasets[1].data.push(b)
-        }
 
-        dataUsageThroughput.datasets[1].data.map(item => { if (item.y > 0) item.y = 0 - (item.y) })
-        dataConnectPacketLoss.datasets[1].data.map(item => { if (item.y > 0) item.y = 0 - (item.y) })
-        
-        this.setState({ dataUsage, dataConnect })
+        //fake data for OTher
+
+        this.setState({ dataUsage })
         this.setState({ totalNumberVolume: total, })
     }
     componentDidUpdate = () => {
-        let requestUsageVolume = Object.assign({}, this.state.requestUsage.requestUsageVolume)
-        let requestConnectLatency = Object.assign({}, this.state.requestConnect.requestConnectLatency)
-        
+        let requestUsage = Object.assign({}, this.state.requestUsage)
+        let requestConnect = Object.assign({}, this.state.requestConnect)
+
         if (this.state.updateChart === true) {
-            let dataConnect = Object.assign([], this.state.dataConnect)
-            let dataUsage = Object.assign([], this.state.dataUsage)
-            let dataConnectLatency = dataConnect.dataConnectLatency
+            let dataConnect = Object.assign({}, this.state.dataConnect)
+            let dataUsage = Object.assign({}, this.state.dataUsage)
+
             axios({
                 method: 'post',
                 url: '/druid/v2?pretty',
@@ -307,7 +429,7 @@ export default class NetWork extends Component {
                     host: '10.144.28.112',
                     port: 8082
                 },
-                data: requestUsageVolume,
+                data: requestUsage.requestUsageVolume,
                 config: {
                     headers: {
                         "Content-Type": "application/json",
@@ -315,10 +437,10 @@ export default class NetWork extends Component {
                     }
                 }
             })
-                .then(resp => {
+                .then(res => {
                     let tmpUpLink = 0
                     let tmpDownLink = 0
-                    resp.data.map(item => {
+                    res.data.map(item => {
                         tmpUpLink = tmpUpLink + item.result['vol_in']
                         tmpDownLink += item.result['vol_out']
 
@@ -333,11 +455,21 @@ export default class NetWork extends Component {
                     dataUsage.dataUsageVolume.labelData[2] = rawTotalDataVolume.labelValue
                     dataUsage.dataUsageVolume.totalDataVolume = rawTotalDataVolume.value
                     this.setState({
-                        dataUsage: dataUsage,
-                        updateChart: false,
+                        dataUsage: dataUsage, updateChart: false,
                     })
                 })
-                .catch(err => console.error(err));
+                .catch(err => {
+                    console.error(err)
+                    dataUsage.dataUsageVolume.datasets[0].data[0] = 0
+                    dataUsage.dataUsageVolume.datasets[0].data[1] = 0
+                    dataUsage.dataUsageVolume.labelData[0] = "byte"
+                    dataUsage.dataUsageVolume.labelData[1] = "byte"
+                    dataUsage.dataUsageVolume.labelData[2] = "byte"
+                    dataUsage.dataUsageVolume.totalDataVolume = 0
+                })
+
+            //Get data for Latency Chart
+            let dataConnectLatency = dataConnect.dataConnectLatency
             axios({
                 method: 'post',
                 url: '/druid/v2?pretty',
@@ -345,7 +477,7 @@ export default class NetWork extends Component {
                     host: '10.144.28.112',
                     port: 8082
                 },
-                data: requestConnectLatency,
+                data: requestConnect.requestConnectLatency,
                 config: {
                     headers: {
                         "Content-Type": "application/json",
@@ -353,28 +485,193 @@ export default class NetWork extends Component {
                     }
                 }
             })
-                .then(resp => {
-                    resp.data.map((item,index)=> {
-                            let a = {
-                                x: index+1,
-                                y: Math.floor(item.result.Sumclient_delay/item.result.Sum_client_delayNotZero)
-                            }
-                            let b = {
-                                x: index+1,
-                                y: Math.floor(item.result.SumRstd/item.result.Sum_stdNotZero)
-                            }
-                            dataConnectLatency.labels.push(index+1)
-                            dataConnectLatency.datasets[0].data.push(a)
-                            dataConnectLatency.datasets[1].data.push(b)
-                        
+                .then(res => {
+                    dataConnectLatency.labels.length = 0
+                    dataConnectLatency.datasets[0].data.length = 0
+                    dataConnectLatency.datasets[1].data.length = 0
+                    res.data.map((item, index) => {
+                        let a = {
+                            x: index + 1,
+                            y: Math.floor(item.result.Sumclient_delay / item.result.Sum_client_delayNotZero)
+                        }
+                        let b = {
+                            x: index + 1,
+                            y: Math.floor(item.result.SumRstd / item.result.Sum_stdNotZero)
+                        }
+                        dataConnectLatency.labels.push(index + 1)
+                        dataConnectLatency.datasets[0].data.push(a)
+                        dataConnectLatency.datasets[1].data.push(b)
+
                     })
                     dataConnectLatency.datasets[1].data.map(item => { if (item.y > 0) item.y = 0 - (item.y) })
                     this.setState({
-                        dataConnect: dataConnect,
-                        updateChart: false,
+                        dataConnect: dataConnect, updateChart: false,
                     })
                 })
-                .catch(err => console.error(err));
+                .catch(err => {
+                    console.error(err)
+                    dataConnectLatency.labels.length = 0
+                    dataConnectLatency.datasets[0].data.length = 0
+                    dataConnectLatency.datasets[1].data.length = 0
+                });
+
+
+            //Get data for PackageLoss Chart
+            let dataConnectPacketLoss = dataConnect.dataConnectPacketLoss
+            axios({
+                method: 'post',
+                url: '/druid/v2?pretty',
+                proxy: {
+                    host: '10.144.28.112',
+                    port: 8082
+                },
+                data: requestConnect.requestConnectPacketLoss,
+                config: {
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Access-Control-Allow-Origin': '*',
+                    }
+                }
+            }).then(res => {
+                dataConnectPacketLoss.labels.length = 0
+                dataConnectPacketLoss.datasets[0].data.length = 0
+                dataConnectPacketLoss.datasets[1].data.length = 0
+                res.data.map((item, index) => {
+                    let a = {
+                        x: index + 1,
+                        y: (item.result.POstrxmit_pkt_in * 100),
+                    }
+                    let b = {
+                        x: index + 1,
+                        y: (item.result.POstrxmit_pkt_OUT * 100)
+                    }
+                    dataConnectPacketLoss.labels.push(index + 1)
+                    dataConnectPacketLoss.datasets[0].data.push(a)
+                    dataConnectPacketLoss.datasets[1].data.push(b)
+                    dataConnectPacketLoss.datasets[1].data.map(item => { if (item.y > 0) item.y = 0 - (item.y) })
+                })
+                this.setState({
+                    dataConnect: dataConnect, updateChart: false,
+                })
+            }).catch(err => {
+                console.error(err)
+                dataConnectPacketLoss.labels.length = 0
+                dataConnectPacketLoss.datasets[0].data.length = 0
+                dataConnectPacketLoss.datasets[1].data.length = 0
+            })
+
+            //Get data for Throughput Chart
+            let dataUsageThroughput = dataUsage.dataUsageThroughput
+            axios({
+                method: 'post',
+                url: '/druid/v2?pretty',
+                proxy: {
+                    host: '10.144.28.112',
+                    port: 8082
+                },
+                data: requestUsage.requestUsageThroughput,
+                config: {
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Access-Control-Allow-Origin': '*',
+                    }
+                }
+            }).then(res => {
+                dataUsageThroughput.labels.length = 0
+                dataUsageThroughput.datasets[0].data.length = 0
+                dataUsageThroughput.datasets[1].data.length = 0
+                dataUsageThroughput.totalUplink = 0
+                dataUsageThroughput.totalDownlink = 0
+                dataUsageThroughput.totalUpDown = 0
+                dataUsageThroughput.labelsTotal.map(item => item = 'byte')
+                dataUsageThroughput.dataTranfer.uplink.length = 0
+                dataUsageThroughput.dataTranfer.downlink.length = 0
+                dataUsageThroughput.dataTranfer.labelTransferUplink.length = 0
+                dataUsageThroughput.dataTranfer.labelTransferDownlink.length = 0
+                res.data.map((item, index) => {
+                    dataUsageThroughput.totalUplink += item.result.ThroughPutVolIn
+                    dataUsageThroughput.totalDownlink += item.result.ThroughPutVolOut
+                    let rawTmpUplink = this.bytesToSize(item.result.ThroughPutVolIn)
+                    let rawTmpDownlink = this.bytesToSize(item.result.ThroughPutVolOut)
+                    dataUsageThroughput.dataTranfer.labelTransferUplink.push(rawTmpUplink.labelValue)
+                    dataUsageThroughput.dataTranfer.labelTransferDownlink.push(rawTmpUplink.labelValue)
+                    let a = {
+                        x: index + 1,
+                        y: item.result.ThroughPutVolIn
+                    }
+                    let b = {
+                        x: index + 1,
+                        y: item.result.ThroughPutVolOut
+                    }
+                    dataUsageThroughput.dataTranfer.uplink.push(rawTmpUplink)
+                    dataUsageThroughput.dataTranfer.downlink.push(rawTmpDownlink)
+                    dataUsageThroughput.labels.push(index + 1)
+                    dataUsageThroughput.datasets[0].data.push(a)
+                    dataUsageThroughput.datasets[1].data.push(b)
+                    dataUsageThroughput.datasets[1].data.map(item => { if (item.y > 0) item.y = 0 - (item.y) })
+                })
+                let rawTotalUplink = this.bytesToSize(dataUsageThroughput.totalUplink)
+                let rawTotalDownlink = this.bytesToSize(dataUsageThroughput.totalDownlink)
+                let rawTotalUpDown = this.bytesToSize(dataUsageThroughput.totalUplink + dataUsageThroughput.totalDownlink)
+                dataUsageThroughput.totalUplink = rawTotalUplink.value
+                dataUsageThroughput.totalDownlink = rawTotalDownlink.value
+                dataUsageThroughput.totalUpDown = rawTotalUpDown.value
+                dataUsageThroughput.labelsTotal[0] = rawTotalUplink.labelValue
+                dataUsageThroughput.labelsTotal[1] = rawTotalDownlink.labelValue
+                dataUsageThroughput.labelsTotal[2] = rawTotalUpDown.labelValue
+                this.setState({
+                    dataConnect: dataConnect, updateChart: false,
+                })
+
+            }).catch(err => {
+                console.error(err)
+                dataUsageThroughput.labels.length = 0
+                dataUsageThroughput.datasets[0].data.length = 0
+                dataUsageThroughput.datasets[1].data.length = 0
+                dataUsageThroughput.totalUplink = 0
+                dataUsageThroughput.totalDownlink = 0
+                dataUsageThroughput.totalUpDown = 0
+                dataUsageThroughput.labelsTotal.map(item => item = 'byte')
+                dataUsageThroughput.dataTranfer.uplink.length = 0
+                dataUsageThroughput.dataTranfer.downlink.length = 0
+                dataUsageThroughput.dataTranfer.labelTransferUplink.length = 0
+                dataUsageThroughput.dataTranfer.labelTransferDownlink.length = 0
+            })
+
+            //Get data for Active Sub Chart
+            let dataUsageActiveSubcriber = dataUsage.dataUsageActiveSubcriber
+            axios({
+                method: 'post',
+                url: '/druid/v2?pretty',
+                proxy: {
+                    host: '10.144.28.112',
+                    port: 8082
+                },
+                data: requestUsage.requestUsageActiveSubcriber,
+                config: {
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Access-Control-Allow-Origin': '*',
+                    }
+                }
+            }).then(res => {
+                dataUsageActiveSubcriber.labels.length=0
+                dataUsageActiveSubcriber.datasets[0].data.length=0
+                res.data.map((item,index) => {
+                    let a = {
+                        x: index+1,
+                        y: item.result.distinct_msisdn
+                    }
+                    dataUsageActiveSubcriber.labels.push(index+1)
+                    dataUsageActiveSubcriber.datasets[0].data.push(a)
+                })
+                this.setState({
+                    dataUsage: dataUsage, updateChart: false,
+                })
+            }).catch(err=>{
+                dataUsageActiveSubcriber.labels.length=0
+                dataUsageActiveSubcriber.datasets[0].data.length=0
+            })
         }
 
     }
@@ -420,18 +717,23 @@ export default class NetWork extends Component {
             isUserMenuOpen: !this.state.isUserMenuOpen
         })
     }
+    changeFormatTime = (date) => {
+        return new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString();
+    }
     handleChangeStartDate = (date) => {
+
         this.setState({ startDate: date })
     }
     handleChangeEndDate = (date) => {
+
         this.setState({ endDate: date })
     }
 
     handleSubmitDate = () => {
         let startDate = this.state.startDate
         let endDate = this.state.endDate
-        startDate = startDate.toISOString()
-        endDate = endDate.toISOString()
+        startDate = this.changeFormatTime(startDate)
+        endDate = this.changeFormatTime(endDate)
         let requestUsage = Object.assign({}, this.state.requestUsage)
         requestUsage.requestUsageVolume.intervals = [startDate + "/" + endDate]
         this.setState({ requestUsage: requestUsage, updateChart: true })
@@ -460,8 +762,10 @@ export default class NetWork extends Component {
     };
     handleChangeTypeOfInterval = (data) => {
         let requestUsage = Object.assign({}, this.state.requestUsage)
+        let requestConnect = Object.assign({}, this.state.requestConnect)
         requestUsage.requestUsageVolume['granularity'] = data.target.value
-        this.setState({ typeofInterVal: data.target.value, requestUsage: requestUsage, updateChart: true })
+        requestConnect.requestConnectLatency['granularity'] = data.target.value
+        this.setState({ typeofInterVal: data.target.value, requestUsage: requestUsage, updateChart: true, requestConnect: requestConnect })
 
     }
     render() {
@@ -613,7 +917,6 @@ export default class NetWork extends Component {
                                                 <div className="row">
                                                     <div className="col-md-5">
                                                         <span>Start Date</span>
-                                                        {/* <DateTime pickerOptions={{format:"LL"}} value="2017-04-20"/> */}
                                                         <React.Fragment>
                                                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                                                 <DateTimePicker value={startDate} onChange={this.handleChangeStartDate} />
@@ -657,6 +960,7 @@ export default class NetWork extends Component {
                                                 <Usage
                                                     dataUsage={this.state.dataUsage}
                                                     optionsBarChart={this.state.optionsBarChart}
+                                                    optionsBarToNegativeNumbThroughtPut={this.state.optionsBarToNegativeNumbThroughtPut}
                                                     optionsDoughVolume={this.state.optionsDoughVolume}
                                                     totalNumberVolume={this.state.totalNumberVolume}
                                                     optionsBarToNegativeNumb={this.state.optionsBarToNegativeNumb}
@@ -670,6 +974,8 @@ export default class NetWork extends Component {
                                                     optionsBarChart={this.state.optionsBarChart}
                                                     totalNumberVolume={this.state.totalNumberVolume}
                                                     optionsBarToNegativeNumb={this.state.optionsBarToNegativeNumb}
+                                                    optionsBarToNegativeNumbThroughtPut={this.state.optionsBarToNegativeNumbThroughtPut}
+
                                                 />
 
 
