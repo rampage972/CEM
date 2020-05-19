@@ -27,10 +27,9 @@ export default class Usage extends Component {
     findPeakActiveSub = () => {
         let biggestNumb = 0
         this.props.dataUsage.dataUsageActiveSubcriber.datasets[0].data.map(item => {
-            if(biggestNumb<item.y)
-            biggestNumb=item.y
+            if (biggestNumb < item.y)
+                biggestNumb = item.y
         })
-        console.log(biggestNumb)
         return biggestNumb
     }
     render() {
@@ -38,7 +37,6 @@ export default class Usage extends Component {
 
         return (
             <div>
-                {console.log(this.props.dataUsage.dataUsageActiveSubcriber.datasets[0].data)}
                 {/* card activeSubs for desktop */}
                 <div className="card card-chart card-info">
                     <div className="card-header ">
@@ -63,7 +61,7 @@ export default class Usage extends Component {
                                             <div className="col-lg-6 text-left">
                                                 <div className="setToCenter">
                                                     <p className="cardBody-label">Now</p>
-                                                    <span className="TotalNumber">{this.props.totalNumberVolume.toFixed(1)} %</span>
+                                                    <span className="TotalNumber">{this.props.totalNumberVolume.toFixed(1)}</span>
 
                                                 </div>
                                             </div>
@@ -72,7 +70,7 @@ export default class Usage extends Component {
                                                     <div className="volumePerSub-container">
                                                         <p className="cardBody-label">Today's Peak Minute</p>
                                                         {this.props.dataUsage.dataUsageActiveSubcriber.datasets[0].data.length > 0 ?
-                                                            <span className="TotalNumber ">{this.findPeakActiveSub()}</span>
+                                                            <span className="TotalNumber ">{this.findPeakActiveSub().toFixed(1)}</span>
                                                             :
                                                             <span className="TotalNumber ">0</span>
                                                         }
@@ -128,7 +126,7 @@ export default class Usage extends Component {
                                             <div className="col-md-12 card-info-mobile-item">
                                                 <div className="setToCenter">
                                                     <p style={{ margin: "0" }}>Now</p>
-                                                    <span className="TotalNumber">{this.props.totalNumberVolume.toFixed(1)} %</span>
+                                                    <span className="TotalNumber">{this.props.totalNumberVolume.toFixed(1)}</span>
 
                                                 </div>
                                             </div>
@@ -136,8 +134,11 @@ export default class Usage extends Component {
                                                 <div className="setToCenter">
                                                     <div className="volumePerSub-container">
                                                         <p style={{ margin: "0" }}>Today's Peak Minute</p>
-                                                        <span className="TotalNumber ">{this.props.totalNumberVolume.toFixed(1)} %</span>
-
+                                                        {this.props.dataUsage.dataUsageActiveSubcriber.datasets[0].data.length > 0 ?
+                                                            <span className="TotalNumber ">{this.findPeakActiveSub().toFixed(1)}</span>
+                                                            :
+                                                            <span className="TotalNumber ">0</span>
+                                                        }
                                                     </div>
                                                 </div>
                                             </div>
@@ -277,25 +278,35 @@ export default class Usage extends Component {
                                         <div className="row">
                                             <div className="col-lg-12 card-info-mobile-item">
                                                 <div className="setToCenter">
-                                                    <p style={{ margin: "0" }}>Now Extenal</p>
-                                                    <span className="TotalNumber">{this.props.totalNumberVolume.toFixed(1)} %</span>
+                                                    <p className="cardBody-label">Total </p>
+                                                    <span className="TotalNumber">{this.props.dataUsage.dataUsageThroughput.totalUpDown + " " + this.props.dataUsage.dataUsageThroughput.labelsTotal[2]} </span>
+                                                    <div className="legend-container">
+                                                        <ul className="mt-8" type="none" style={{ padding: "0" }}>
+                                                            {legendBarThroughput && legendBarThroughput.length &&
+                                                                legendBarThroughput.map((item, key) => {
+                                                                    return (
+                                                                        <li key={key} >
+                                                                            {/* <div
+                                                                                style={{
+                                                                                    display: "inline-block",
+                                                                                    float: "left",
+                                                                                    width: "20px",
+                                                                                    height: "20px",
+                                                                                    backgroundColor: item.fillStyle
+                                                                                }}
+                                                                            >
 
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-12 card-info-mobile-item">
-                                                <div className="setToCenter">
-                                                    <p style={{ margin: "0" }}>Current Hour Extenal</p>
-                                                    <span className="TotalNumber">{this.props.totalNumberVolume.toFixed(1)} %</span>
+                                                                            </div> */}
+                                                                            {key === 0 ?
+                                                                                <span >{item.text + " " + this.props.dataUsage.dataUsageThroughput.totalUplink + " " + this.props.dataUsage.dataUsageThroughput.labelsTotal[key]} </span>
+                                                                                :
+                                                                                <span >{item.text + " " + this.props.dataUsage.dataUsageThroughput.totalDownlink + " " + this.props.dataUsage.dataUsageThroughput.labelsTotal[key]} </span>
+                                                                            }
 
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-12 card-info-mobile-item">
-                                                <div className="setToCenter">
-
-                                                    <div className="volumePerSub-container">
-                                                        <p style={{ margin: "0" }}>Today Extenal</p>
-                                                        <span className="TotalNumber ">{this.props.totalNumberVolume.toFixed(1)} %</span>
-
+                                                                        </li>
+                                                                    );
+                                                                })}
+                                                        </ul>
                                                     </div>
                                                 </div>
                                             </div>
@@ -316,39 +327,6 @@ export default class Usage extends Component {
 
                             </div>
 
-                            <div className="col-md-12">
-                                <div className="legend-container">
-                                    <div className="ct-chart" id="dailySalesChart">
-                                        <div className="row">
-                                            <div className="col-md-12 card-info-mobile-item">
-                                                <div className="setToCenter">
-
-                                                    <p style={{ margin: "0" }}>Now Intenal</p>
-                                                    <span className="TotalNumber">{this.props.totalNumberVolume.toFixed(1)} %</span>
-                                                </div>
-                                            </div>
-                                            <div className="col-md-12 card-info-mobile-item">
-                                                <div className="setToCenter">
-                                                    <p style={{ margin: "0" }}>Current Hour Intenal</p>
-                                                    <span className="TotalNumber">{this.props.totalNumberVolume.toFixed(1)} %</span>
-                                                </div>
-                                            </div>
-                                            <div className="col-md-12 card-info-mobile-item">
-                                                <div className="setToCenter">
-
-                                                    <div className="volumePerSub-container">
-                                                        <p style={{ margin: "0" }}>Today Intenal</p>
-                                                        <span className="TotalNumber ">{this.props.totalNumberVolume.toFixed(1)} %</span>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                            </div>
                         </div>
                         {/* <div className="card-footer">
                                                         <div className="stats">
@@ -486,23 +464,15 @@ export default class Usage extends Component {
                                             <div className="setToCenter">
                                                 <div className="legend-container">
                                                     <div className="ct-chart" id="dailySalesChart">
-                                                        <span style={{ margin: "0" }}>Today</span>
+                                                        <p className="cardBody-label">Total</p>
+                                                        <span className="TotalNumber">{this.props.dataUsage.dataUsageVolume.totalDataVolume + " " + this.props.dataUsage.dataUsageVolume.labelData[2]}</span>
 
 
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="col-md-12 ">
-                                            <div className="setToCenter">
-                                                <div className="legend-container">
-                                                    <div className="ct-chart" id="dailySalesChart">
-                                                        <span className="TotalNumber">{this.props.totalNumberVolume.toFixed(1)} TB</span>
 
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                     <div className="card-info-mobile-item">
                                         <div className="col-md-12 ">
@@ -545,8 +515,8 @@ export default class Usage extends Component {
                                                                     </div>
                                                                     <span className="legendLabel">{item.text}</span>
                                                                     {item.text === "Uplink" ?
-                                                                        <span style={{ fontWeight: "bold" }}> {this.props.dataUsage.dataUsageVolume.datasets[0].data[0]} TB</span>
-                                                                        : <span style={{ fontWeight: "bold" }}> {this.props.dataUsage.dataUsageVolume.datasets[0].data[1]} TB</span>
+                                                                        <span style={{ fontWeight: "bold" }}> {this.props.dataUsage.dataUsageVolume.datasets[0].data[0] + " " + this.props.dataUsage.dataUsageVolume.labelData[0]}</span>
+                                                                        : <span style={{ fontWeight: "bold" }}> {this.props.dataUsage.dataUsageVolume.datasets[0].data[1] + " " + this.props.dataUsage.dataUsageVolume.labelData[1]}</span>
 
                                                                     }
                                                                 </li>

@@ -24,10 +24,14 @@ import { faUser, faProjectDiagram, faEllipsisV, faBars, faMapMarkerAlt, faPlaneD
 export default class NetWork extends Component {
     constructor() {
         super()
+        function parseIsoDatetime(dtstr) {
+            var dt = dtstr.split(/[: T-]/).map(parseFloat);
+            return new Date(dt[0], dt[1] - 1, dt[2], dt[3] || 0, dt[4] || 0, dt[5] || 0, 0);
+        }
         this.state = {
             typeofInterVal: "hour",
-            startDate: new Date(),
-            endDate: new Date(),
+            startDate: parseIsoDatetime("2019-12-08T00:48:00.000Z"),
+            endDate: parseIsoDatetime("2019-12-08T23:58:00.000Z"),
             isUserMenuOpen: false,
             isMenuMiniOpened: false,
             currentWidth: 0,
@@ -422,6 +426,7 @@ export default class NetWork extends Component {
             let dataConnect = Object.assign({}, this.state.dataConnect)
             let dataUsage = Object.assign({}, this.state.dataUsage)
 
+            //Get data for Volume Chart
             axios({
                 method: 'post',
                 url: '/druid/v2?pretty',
@@ -655,22 +660,22 @@ export default class NetWork extends Component {
                     }
                 }
             }).then(res => {
-                dataUsageActiveSubcriber.labels.length=0
-                dataUsageActiveSubcriber.datasets[0].data.length=0
-                res.data.map((item,index) => {
+                dataUsageActiveSubcriber.labels.length = 0
+                dataUsageActiveSubcriber.datasets[0].data.length = 0
+                res.data.map((item, index) => {
                     let a = {
-                        x: index+1,
+                        x: index + 1,
                         y: item.result.distinct_msisdn
                     }
-                    dataUsageActiveSubcriber.labels.push(index+1)
+                    dataUsageActiveSubcriber.labels.push(index + 1)
                     dataUsageActiveSubcriber.datasets[0].data.push(a)
                 })
                 this.setState({
                     dataUsage: dataUsage, updateChart: false,
                 })
-            }).catch(err=>{
-                dataUsageActiveSubcriber.labels.length=0
-                dataUsageActiveSubcriber.datasets[0].data.length=0
+            }).catch(err => {
+                dataUsageActiveSubcriber.labels.length = 0
+                dataUsageActiveSubcriber.datasets[0].data.length = 0
             })
         }
 
@@ -774,7 +779,7 @@ export default class NetWork extends Component {
             <div className={isMenuMiniOpened ? "sidebar-mini" : ""}>
                 <div className="wrapper ">
 
-                    <div style={{ zIndex: 10000 }} className={currentWidth > 991 ? "sidebar" : isSubMenuOpened ? "sidebar toggleSubMenu" : "sidebar"} data-color="azure" data-background-color="black" data-image="../assets/img/sidebar-1.jpg">
+                    <div style={!isMenuMiniOpened && currentWidth > 991?{ zIndex: 10000 , width:"17%" }:{ zIndex: 10000}} className={currentWidth > 991 ? "sidebar" : isSubMenuOpened ? "sidebar toggleSubMenu" : "sidebar"} data-color="azure" data-background-color="black" data-image="../assets/img/sidebar-1.jpg">
                         <div className="logo" style={{ cursor: "pointer" }}>
 
                             <a className="simple-text logo-mini" style={{ color: "white", fontSize: "2em", overflow: "unset" }}>
@@ -785,7 +790,7 @@ export default class NetWork extends Component {
                                 Net Work
                             </a>
                         </div>
-                        <div className="sidebar-wrapper" >
+                        <div className="sidebar-wrapper"  style={{width:"100%"}}>
                             <ul className="nav">
                                 <li className="nav-item" style={{ cursor: "pointer" }}>
                                     <a className="nav-link" onClick={(e) => this.handleChangeSubMenu(e)}>
@@ -914,13 +919,12 @@ export default class NetWork extends Component {
                                     <div className="container-fluid">
                                         <div className="row">
                                             <div className="col-md-4 paddingLRCard">
-                                                <div className="row">
-                                                    <div className="col-md-5">
-                                                        <span>Start Date</span>
+                                                <div className="row" style={{padding:"10px 0"}}>
+                                                    <div className={currentWidth <= 991? "col-md-12":"col-md-6" }style={{padding:"10px 0"}}>
+                                                        <p>Start Date</p>
                                                         <React.Fragment>
                                                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                                                 <DateTimePicker value={startDate} onChange={this.handleChangeStartDate} />
-
                                                             </MuiPickersUtilsProvider>
                                                         </React.Fragment>
                                                         {/* <DatePicker
@@ -929,8 +933,8 @@ export default class NetWork extends Component {
                                                     />
                                                      */}
                                                     </div>
-                                                    <div className="col-md-5">
-                                                        <span>End Date</span>
+                                                    <div className={currentWidth <= 991? "col-md-12":"col-md-6" }style={{padding:"10px 0"}}>
+                                                        <p>End Date</p>
                                                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                                             <DateTimePicker value={endDate} onChange={this.handleChangeEndDate} />
                                                         </MuiPickersUtilsProvider>
@@ -939,7 +943,10 @@ export default class NetWork extends Component {
                                                         onChange={(e) => this.handleChangeEndDate(e)}
                                                     /> */}
                                                     </div>
-                                                    <div className="col-md-2">
+                                                    
+                                                </div>
+                                                <div className="row">
+                                                    <div className="col-md-12">
                                                         <button className="btn btn-white " onClick={() => this.handleSubmitDate()}>
                                                             FIND
                                                         </button>
@@ -948,10 +955,10 @@ export default class NetWork extends Component {
                                             </div>
                                             <div className="col-md-3">
                                                 <FormControl component="fieldset">
-                                                    <RadioGroup aria-label="gender" name="gender1" color="default" value={typeofInterVal} onChange={this.handleChangeTypeOfInterval}>
-                                                        <FormControlLabel value="minute" color="default" control={<Radio />} label="Minute" />
-                                                        <FormControlLabel value="hour" control={<Radio />} label="Hour" />
-                                                        <FormControlLabel value="day" control={<Radio />} label="Day" />
+                                                    <RadioGroup aria-label="gender" name="gender1" value={typeofInterVal} onChange={this.handleChangeTypeOfInterval}>
+                                                        <FormControlLabel value="minute" control={<Radio color="primary" />} label="Minute" />
+                                                        <FormControlLabel value="hour" control={<Radio color="primary" />} label="Hour" />
+                                                        <FormControlLabel value="day" control={<Radio color="primary" />} label="Day" />
                                                     </RadioGroup>
                                                 </FormControl>
                                             </div>
@@ -983,7 +990,6 @@ export default class NetWork extends Component {
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                         {currentWidth <= 991 && isSubMenuOpened === true ?
@@ -991,6 +997,17 @@ export default class NetWork extends Component {
                             : null
                         }
                     </div>
+                    {this.state.updateChart === true ?
+                        <React.Fragment>
+
+                            <div className="overlay show"></div>
+                            <div className="spanner show">
+                                <div className="loader"></div>
+                                <p style={{ color: "black" }}>Loading data, please be patient.</p>
+                            </div>
+                        </React.Fragment>
+                        : null
+                    }
                 </div>
             </div>
         )
