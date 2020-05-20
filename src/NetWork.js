@@ -405,19 +405,6 @@ export default class NetWork extends Component {
         }
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     }
-    componentWillMount = () => {
-        let dataUsage = Object.assign([], this.state.dataUsage)
-        let dataConnect = Object.assign([], this.state.dataConnect)
-        let total = (dataUsage.dataUsageVolume.datasets[0].data[0] + dataUsage.dataUsageVolume.datasets[0].data[1])
-
-        //fake data for Subcriber
-        let dataUsageActiveSubcriber = dataUsage.dataUsageActiveSubcriber
-
-        //fake data for OTher
-
-        this.setState({ dataUsage })
-        this.setState({ totalNumberVolume: total, })
-    }
     componentDidUpdate = () => {
         let requestUsage = Object.assign({}, this.state.requestUsage)
         let requestConnect = Object.assign({}, this.state.requestConnect)

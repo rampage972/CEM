@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLongArrowAltLeft, faLongArrowAltRight, faUser, faLock, faKeyboard } from '@fortawesome/free-solid-svg-icons'
 import { CSSTransition } from 'react-transition-group'
 import './Login.css'
+import { sha256, sha224 } from 'js-sha256';
 export default class Login extends Component {
 
     constructor() {
@@ -25,11 +26,11 @@ export default class Login extends Component {
     }
 
     handleInputPassword = (data) => {
-        this.setState({ tmpPass: data.target.value })
+        this.setState({ tmpPass: sha256(data.target.value) })
     }
 
     handleInputRePassword = (data) => {
-        this.setState({ tmpRePass: data.target.value })
+        this.setState({ tmpRePass: sha256(data.target.value) })
     }
 
     handleValidateInput = (e) => {
@@ -70,9 +71,8 @@ export default class Login extends Component {
             <div>
                 <div className="limiter">
                     <div className="container-login100">
-                        <div className="wrap-login100">=
-
-                                <div className="login100-pic js-tilt" data-tilt>
+                        <div className="wrap-login100">
+                            <div className="login100-pic js-tilt" data-tilt>
                                 <img src="/asset/images/img-01.png" alt="IMG" />
                             </div>
                             <div className="login100-form validate-form">
