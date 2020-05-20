@@ -756,7 +756,10 @@ export default class NetWork extends Component {
         let requestUsage = Object.assign({}, this.state.requestUsage)
         let requestConnect = Object.assign({}, this.state.requestConnect)
         requestUsage.requestUsageVolume['granularity'] = data.target.value
+        requestUsage.requestUsageActiveSubcriber['granularity'] = data.target.value
+        requestUsage.requestUsageThroughput['granularity'] = data.target.value
         requestConnect.requestConnectLatency['granularity'] = data.target.value
+        requestConnect.requestConnectPacketLoss['granularity'] = data.target.value
         this.setState({ typeofInterVal: data.target.value, requestUsage: requestUsage, updateChart: true, requestConnect: requestConnect })
 
     }
