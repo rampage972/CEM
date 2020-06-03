@@ -39,7 +39,7 @@ h1,h2,h3,h4,h5,h6 {
 
 p {
 	font-family: Poppins-Regular;
-	font-size: 14px;
+	font-size: 13px;
 	line-height: 1.7;
 	color: #666666;
 	margin: 0px;
@@ -66,20 +66,20 @@ textarea:focus, input:focus {
   border-color: transparent !important;
 }
 
-input:focus::-webkit-input-placeholder { color:transparent; }
-input:focus:-moz-placeholder { color:transparent; }
-input:focus::-moz-placeholder { color:transparent; }
-input:focus:-ms-input-placeholder { color:transparent; }
+input:focus::-webkit-input-placeholder { color:transparent; vertical-align: middle;}
+input:focus:-moz-placeholder { color:transparent; vertical-align: middle; }
+input:focus::-moz-placeholder { color:transparent; vertical-align: middle;}
+input:focus:-ms-input-placeholder { color:transparent; vertical-align: middle;}
 
 textarea:focus::-webkit-input-placeholder { color:transparent; }
 textarea:focus:-moz-placeholder { color:transparent; }
 textarea:focus::-moz-placeholder { color:transparent; }
 textarea:focus:-ms-input-placeholder { color:transparent; }
 
-input::-webkit-input-placeholder { color: #999999; }
-input:-moz-placeholder { color: #999999; }
-input::-moz-placeholder { color: #999999; }
-input:-ms-input-placeholder { color: #999999; }
+input::-webkit-input-placeholder { color: #999999; line-height: 50px; }
+input:-moz-placeholder { color: #999999;line-height: 50px; }
+input::-moz-placeholder { color: #999999;line-height: 50px; }
+input:-ms-input-placeholder { color: #999999; line-height: 50px;}
 
 textarea::-webkit-input-placeholder { color: #999999; }
 textarea:-moz-placeholder { color: #999999; }
@@ -116,6 +116,12 @@ iframe {
   font-size: 13px;
   line-height: 1.5;
   color: #666666;
+}
+
+.validateText {
+  padding-left: 2em;
+  float: left;
+  position: absolute;
 }
 
 
@@ -197,7 +203,7 @@ iframe {
   position: relative;
   width: 100%;
   z-index: 1;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .input100 {

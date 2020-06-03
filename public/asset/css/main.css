@@ -24,6 +24,21 @@
   font-family: Montserrat-Bold;
   src: url('../fonts/montserrat/Montserrat-Bold.ttf'); 
 }
+@font-face {
+  font-family: Lato-Regular;
+  src: url('../fonts/Lato/Lato-Regular.ttf'); 
+}
+
+@font-face {
+  font-family: Lato-Bold;
+  src: url('../fonts/Lato/Lato-Bold.ttf'); 
+}
+
+@font-face {
+  font-family: Lato-Medium;
+  src: url('../fonts/Lato/Lato-Medium.ttf'); 
+}
+
 
 /*//////////////////////////////////////////////////////////////////
 [ RESTYLE TAG ]*/
@@ -36,12 +51,12 @@
 
 body, html {
 	height: 100%;
-	font-family: Poppins-Regular, sans-serif;
+	font-family: Lato-Regular, sans-serif;
 }
 
 /*---------------------------------------------*/
 a {
-	font-family: Poppins-Regular;
+	font-family: Lato-Regular;
 	font-size: 14px;
 	line-height: 1.7;
 	color: #666666;
@@ -67,8 +82,8 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 p {
-	font-family: Poppins-Regular;
-	font-size: 14px;
+	font-family: Lato-Regular;
+	font-size: 13px;
 	line-height: 1.7;
 	color: #666666;
 	margin: 0px;
@@ -134,14 +149,14 @@ iframe {
 /*//////////////////////////////////////////////////////////////////
 [ Utility ]*/
 .txt1 {
-  font-family: Poppins-Regular;
+  font-family: Lato-Regular;
   font-size: 13px;
   line-height: 1.5;
   color: #999999;
 }
 
 .txt2 {
-  font-family: Poppins-Regular;
+  font-family: Lato-Regular;
   font-size: 13px;
   line-height: 1.5;
   color: #666666;

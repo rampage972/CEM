@@ -1,7 +1,6 @@
 import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
-import NetWork from "./NetWork";
+import "./App.css"
+import National from "./National/National";
 import Login from "./User/Login";
 import {
   BrowserRouter as Router,
@@ -9,26 +8,20 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
-function App() {
-  return (
-    <div className="App">
-      <React.Fragment>
-        <Router>
-          <Route exact path={["", "/"]}>
-            <Redirect to="/login" />
-          </Route>
-          <Switch>
-            <Route exact path="/login">
-              <Login />
-            </Route>
-            <Route exact path="/dashboard">
-              <NetWork />
-            </Route>
-          </Switch>
-        </Router>
-      </React.Fragment>
-    </div>
-  );
+class App extends React.Component {
+  render() {
+    return (
+      <div className="App">
+        <Switch>
+          <Redirect exact from="/" to="/login" />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/dashboard" component={National} />
+        </Switch>
+      </div>
+
+
+    )
+  }
 }
 
 export default App;

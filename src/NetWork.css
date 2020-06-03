@@ -70,17 +70,20 @@
     padding-left: 2em;
 }
 .legendLabel {
-    padding-left: 10px;
+  padding-left: 10px;
 }
 .sidebar-background{
-    background-image: url('/asset/image/sidebar.jpg');
+  background-image: url('/asset/image/sidebar.jpg');
 }
 .MuiInput-input {
-   text-align: center;
+  text-align: center;
 }
 
+.sidebar-wrapper{
+  overflow-x: hidden !important;
+}
 
-
+/* FOR SPINNER */
 .spanner{
     position: fixed;;
     top: 50%;
@@ -140,6 +143,7 @@
   .loader:after {
     left: 3.5em;
   }
+
   @-webkit-keyframes load7 {
     0%,
     80%,

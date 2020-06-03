@@ -1,0 +1,58 @@
+.selectMaxRow {
+    background-color: "#eee"
+}
+
+.selectSortBy {
+    background-color: "#eee";
+    width: 100px;
+    overflow: hidden;
+}
+
+.tableTopApp-th {
+    font-size: 14px !important;
+}
+
+.tableTopApp-td {
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.content-middle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.overlay-topApp {
+    height: 77vh;
+}
+
+.table-header {
+    color: white;
+}
+
+.tooltipItem-label {
+    font-size: 10px;
+}
+
+.tooltip-notice {
+    color: #3e86ae;
+}
+
+.headcol {
+    /* position: absolute;
+    left: 0; */
+    /* width: 5em;
+    top: auto;
+    border-top-width: 1px;
+    margin-top: -1px; */
+}
+
+.tableTopApp {
+    position: relative;
+    overflow-x: auto;
+}
+
+.lh-100 {
+    line-height: 100px;
+}

@@ -1,0 +1,19 @@
+.form-control::-moz-placeholder {
+    line-height: initial;
+}
+
+.close-layer {
+    z-index: 800;
+}
+
+.navbar-toggler {
+    position: fixed;
+    top: 2em
+}
+
+.searchIcon {
+    position: absolute;
+    transform: translate(10px, 10px);
+    top: 0;
+    left: 0;
+}

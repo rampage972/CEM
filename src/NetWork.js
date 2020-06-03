@@ -780,7 +780,7 @@ export default class NetWork extends Component {
                                 Net Work
                             </a>
                         </div>
-                        <div className="sidebar-wrapper"  style={{width:"100%"}}>
+                        <div className="sidebar-wrapper"  style={{width:"100%", overflowX:"hidden"}}>
                             <ul className="nav">
                                 <li className="nav-item" style={{ cursor: "pointer" }}>
                                     <a className="nav-link" onClick={(e) => this.handleChangeSubMenu(e)}>
